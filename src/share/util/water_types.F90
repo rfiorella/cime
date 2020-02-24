@@ -92,12 +92,15 @@ contains
 
 
   !=======================================================================
-  function wtype_get_alpha(ispec, isrctype, idsttype, tk, rh, do_kinetic)
+  function wtype_get_alpha(ispec, isrctype, idsttype, tk, rh, do_kinetic, rhi)
     !-----------------------------------------------------------------------
     ! Purpose: Retrieve the fractionation for a process that goes from
     !          the source water type to the destination water type.
     !
     ! Author: Chuck Bardeen
+    !
+    ! Modified for RH-ice (RHi) use by Marina Dutsch
+    !
     !-----------------------------------------------------------------------
     use water_isotopes, only : wiso_alpl, wiso_alpi, wiso_akel, wiso_akci
 
@@ -107,6 +110,7 @@ contains
     real(r8), intent(in)            :: tk              ! temperature (K)
     real(r8),  intent(in)           :: rh              ! relative humidity (fraction)
     logical, intent(in)             :: do_kinetic      ! use kinetic calculation
+    real(r8), intent(in), optional  :: rhi             ! relative humidity wrt ice (fraction)
     real(r8)                        :: wtype_get_alpha ! return alpha
 
     !-----------------------------------------------------------------------
@@ -130,7 +134,13 @@ contains
              wtype_get_alpha = wiso_alpi(ispec,tk)
 
              if (do_kinetic) then
-                wtype_get_alpha = wiso_akci(ispec,tk,wtype_get_alpha)
+                if(present(rhi)) then !Is RH wrt ice provided?
+                  !then calculate fractionation directly from RH:
+                  wtype_get_alpha = wiso_akci(ispec,tk,wtype_get_alpha,rh=rhi)
+                else
+                  !otherwise, just use Jouzel temperature approximation:
+                  wtype_get_alpha = wiso_akci(ispec,tk,wtype_get_alpha)
+                end if
              end if
           end if
 

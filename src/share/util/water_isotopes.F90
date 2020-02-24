@@ -121,7 +121,7 @@ module water_isotopes
 !      difrm = (/ 1._r8, 1._r8, 1._r8, 1._r8 /)                 ! no kinetic fractination
 !      difrm = (/ 1._r8, 1._r8, 0.9836504_r8, 0.9686999_r8 /)   ! this with expk
 !      difrm = (/ 1._r8, 1._r8, 0.9755_r8, 0.9723_r8 /)         ! Merlivat 1978 (tuned for isoCAM3)
-       difrm = (/ 1._r8, 1._r8, 0.9757_r8, 0.9727_r8 /)         ! Merlivat 1978 (direct from paper)
+      difrm = (/ 1._r8, 1._r8, 0.9757_r8, 0.9727_r8 /)         ! Merlivat 1978 (direct from paper)
 !      difrm = (/ 1._r8, 1._r8, 0.9839_r8, 0.9691_r8 /)         ! Cappa etal 2003
 
 ! Prescribed isotopic ratios (largely arbitrary and tunable)
@@ -420,24 +420,34 @@ function wiso_akel(isp,tk,hum0,alpeq)
 end function wiso_akel
 
 !=======================================================================
-  function wiso_akci(isp,tk,alpeq)
+  function wiso_akci(isp,tk,alpeq,rh)
 !-----------------------------------------------------------------------
 ! Purpose: return modified fractination for kinetic effects during
 !          condensation to ice.
 !          Make use of supersaturation function.
 ! Author:  David Noone <dcn@caltech.edu> - Tue Jul  1 12:02:24 MDT 2003
+!
+! Modified for direct RH-ice (RHi) use by Marina Dutsch
+!
 !-----------------------------------------------------------------------
-    integer , intent(in)        :: isp   ! species indes
-    real(r8), intent(in)        :: tk    ! temperature (k)
-    real(r8), intent(in)        :: alpeq ! equilibrium fractionation factor
-    real(r8) :: wiso_akci               ! return effective fractionation
-    real(r8) :: sat1                    ! super sturation
-    real(r8) :: difrmj                  ! isotopic diffusion for subs. molec.
-    real(r8) :: dondi                   ! D / Di, (rather than Di/D)
+    integer , intent(in)           :: isp   ! species indes
+    real(r8), intent(in)           :: tk    ! temperature (k)
+    real(r8), intent(in)           :: alpeq ! equilibrium fractionation factor
+    real(r8), intent(in), optional :: rh    ! relative humidity (unitless)
+    real(r8) :: wiso_akci                   ! return effective fractionation
+    real(r8) :: sat1                        ! super sturation
+    real(r8) :: difrmj                      ! isotopic diffusion for subs. molec.
+    real(r8) :: dondi                       ! D / Di, (rather than Di/D)
 !-----------------------------------------------------------------------
 !
     if (tk < tkini) then                ! anytime below freezing
-      sat1 = max(1._r8, wiso_ssatf(tk))
+      if(present(rh)) then              !Is RH wrt ice provided?
+        !then calculate fractionation directly from RH:
+        sat1 = min(max(1._r8, rh),ssatmx)
+      else
+        !otherwise, use Jouzel temperature approximation:
+        sat1 = max(1._r8, wiso_ssatf(tk))
+      end if
 !!      difrmj = difrm(isp)/fisub(isp)
       difrmj = difrm(isp)
       dondi = 1._r8/difrmj
