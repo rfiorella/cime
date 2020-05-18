@@ -50,9 +50,13 @@ module seq_flux_mct
   real(r8), allocatable ::  shum_16O (:)  ! atm H2O tracer
   real(r8), allocatable ::  shum_HDO (:)  ! atm HDO tracer
   real(r8), allocatable ::  shum_18O (:)  ! atm H218O tracer
+  real(r8), allocatable ::  shum_17O (:)  ! atm H217O tracer
+  real(r8), allocatable ::  shum_HTO (:)  ! atm HTO tracer
   real(r8), allocatable ::  roce_16O (:)  ! ocn H2O ratio
   real(r8), allocatable ::  roce_HDO (:)  ! ocn HDO ratio
   real(r8), allocatable ::  roce_18O (:)  ! ocn H218O ratio
+  real(r8), allocatable ::  roce_17O (:)  ! ocn H217O ratio
+  real(r8), allocatable ::  roce_HTO (:)  ! ocn HTO ratio
   real(r8), allocatable ::  dens (:)  ! atm density
   real(r8), allocatable ::  tbot (:)  ! atm bottom surface T
   real(r8), allocatable ::  pslv (:)  ! sea level pressure (Pa)
@@ -63,6 +67,8 @@ module seq_flux_mct
   real(r8), allocatable ::  evap_16O (:) !H2O flux: evaporation
   real(r8), allocatable ::  evap_HDO (:) !HDO flux: evaporation
   real(r8), allocatable ::  evap_18O (:) !H218O flux: evaporation
+  real(r8), allocatable ::  evap_17O (:) !H217O flux: evaporation
+  real(r8), allocatable ::  evap_HTO (:) !HTO flux: evaporation
   real(r8), allocatable ::  taux (:)  ! wind stress, zonal
   real(r8), allocatable ::  tauy (:)  ! wind stress, meridional
   real(r8), allocatable ::  tref (:)  ! diagnostic:  2m ref T
@@ -124,6 +130,8 @@ module seq_flux_mct
   integer :: index_a2x_Sa_shum_16O
   integer :: index_a2x_Sa_shum_HDO
   integer :: index_a2x_Sa_shum_18O
+  integer :: index_a2x_Sa_shum_17O
+  integer :: index_a2x_Sa_shum_HTO
   integer :: index_a2x_Sa_dens
   integer :: index_a2x_Sa_pslv
   integer :: index_a2x_Faxa_swndr
@@ -143,6 +151,8 @@ module seq_flux_mct
   integer :: index_o2x_So_roce_16O
   integer :: index_o2x_So_roce_HDO
   integer :: index_o2x_So_roce_18O
+  integer :: index_o2x_So_roce_17O
+  integer :: index_o2x_So_roce_HTO
   integer :: index_xao_So_tref
   integer :: index_xao_So_qref
   integer :: index_xao_So_avsdr
@@ -157,6 +167,7 @@ module seq_flux_mct
   integer :: index_xao_Faox_evap_16O
   integer :: index_xao_Faox_evap_HDO
   integer :: index_xao_Faox_evap_18O
+  integer :: index_xao_Faox_evap_HTO
   integer :: index_xao_Faox_lwup
   integer :: index_xao_Faox_swdn
   integer :: index_xao_Faox_swup
@@ -250,6 +261,12 @@ contains
     allocate(shum_18O(nloc),stat=ier)
     if(ier/=0) call mct_die(subName,'allocate shum_18O',ier)
     shum_18O = 0.0_r8
+    allocate(shum_17O(nloc),stat=ier)
+    if(ier/=0) call mct_die(subName,'allocate shum_17O',ier)
+    shum_17O = 0.0_r8
+    allocate(shum_HTO(nloc),stat=ier)
+    if(ier/=0) call mct_die(subName,'allocate shum_HTO',ier)
+    shum_HTO = 0.0_r8
     allocate(dens(nloc),stat=ier)
     if(ier/=0) call mct_die(subName,'allocate dens',ier)
     dens = 0.0_r8
@@ -286,6 +303,12 @@ contains
     allocate(roce_18O(nloc),stat=ier)
     if(ier/=0) call mct_die(subName,'allocate roce_18O',ier)
     roce_18O = 0.0_r8
+    allocate(roce_17O(nloc),stat=ier)
+    if(ier/=0) call mct_die(subName,'allocate roce_17O',ier)
+    roce_17O = 0.0_r8
+    allocate(roce_HTO(nloc),stat=ier)
+    if(ier/=0) call mct_die(subName,'allocate roce_HTO',ier)
+    roce_HTO = 0.0_r8
 
     ! Output fields
     allocate(sen (nloc),stat=ier)
@@ -306,6 +329,12 @@ contains
     allocate(evap_18O(nloc),stat=ier)
     if(ier/=0) call mct_die(subName,'allocate evap_18O',ier)
     evap_18O = 0.0_r8
+    allocate(evap_17O(nloc),stat=ier)
+    if(ier/=0) call mct_die(subName,'allocate evap_17O',ier)
+    evap_17O = 0.0_r8
+    allocate(evap_HTO(nloc),stat=ier)
+    if(ier/=0) call mct_die(subName,'allocate evap_HTO',ier)
+    evap_HTO = 0.0_r8
     allocate(lwup(nloc),stat=ier)
     if(ier/=0) call mct_die(subName,'allocate lwup',ier)
     lwup = 0.0_r8
@@ -671,6 +700,10 @@ contains
     if(ier/=0) call mct_die(subName,'allocate shum_HDO',ier)
     allocate(shum_18O(nloc_a2o),stat=ier)
     if(ier/=0) call mct_die(subName,'allocate shum_18O',ier)
+    allocate(shum_17O(nloc_a2o),stat=ier)
+    if(ier/=0) call mct_die(subName,'allocate shum_17O',ier)
+    allocate(shum_HTO(nloc_a2o),stat=ier)
+    if(ier/=0) call mct_die(subName,'allocate shum_HTO',ier)
     allocate(dens(nloc_a2o),stat=ier)
     if(ier/=0) call mct_die(subName,'allocate dens',ier)
     allocate(tbot(nloc_a2o),stat=ier)
@@ -703,6 +736,10 @@ contains
     if(ier/=0) call mct_die(subName,'allocate evap_HDO',ier)
     allocate(evap_18O(nloc_a2o),stat=ier)
     if(ier/=0) call mct_die(subName,'allocate evap_18O',ier)
+    allocate(evap_17O(nloc_a2o),stat=ier)
+    if(ier/=0) call mct_die(subName,'allocate evap_17O',ier)
+    allocate(evap_HTO(nloc_a2o),stat=ier)
+    if(ier/=0) call mct_die(subName,'allocate evap_HTO',ier)
     allocate(lwup(nloc_a2o),stat=ier)
     if(ier/=0) call mct_die(subName,'allocate lwup',ier)
     allocate(taux(nloc_a2o),stat=ier)
@@ -967,6 +1004,8 @@ contains
     integer(in) :: index_evap_16O
     integer(in) :: index_evap_HDO
     integer(in) :: index_evap_18O
+    integer(in) :: index_evap_17O
+    integer(in) :: index_evap_HTO
     integer(in) :: index_lwup
     integer(in) :: index_sumwt
     integer(in) :: atm_nx,atm_ny,ocn_nx,ocn_ny
@@ -1025,6 +1064,8 @@ contains
           shum_16O(n) = 1.e-2_r8 ! H216O specific humidity    ~ kg/kg
           shum_HDO(n) = 1.e-2_r8 ! HD16O specificy humidity   ~ kg/kg
           shum_18O(n) = 1.e-2_r8 ! H218O specific humidity    ~ kg/kg
+          shum_17O(n) = 1.e-2_r8 ! H217O specific humidity    ~ kg/kg
+          shum_HTO(n) = 1.e-2_r8 ! HT16O specific humidity    ~ kg/kg
           roce_16O(n) = 1.0_r8 ! H216O ratio ~ mol/mol
           roce_HDO(n) = 1.0_r8 ! HD16O ratio ~ mol/mol
           roce_18O(n) = 1.0_r8 ! H218O ratio ~ mol/mol
@@ -1061,6 +1102,8 @@ contains
           shum_16O(n) = a2x_e%rAttr(index_a2x_Sa_shum_16O,ia)
           shum_HDO(n) = a2x_e%rAttr(index_a2x_Sa_shum_HDO,ia)
           shum_18O(n) = a2x_e%rAttr(index_a2x_Sa_shum_18O,ia)
+          shum_17O(n) = a2x_e%rAttr(index_a2x_Sa_shum_17O,ia)
+          shum_HTO(n) = a2x_e%rAttr(index_a2x_Sa_shum_HTO,ia)
           dens(n) = a2x_e%rAttr(index_a2x_Sa_dens,ia)
           tbot(n) = a2x_e%rAttr(index_a2x_Sa_tbot,ia)
           pslv(n) = a2x_e%rAttr(index_a2x_Sa_pslv,ia)
@@ -1070,6 +1113,8 @@ contains
           roce_16O(n) = o2x_e%rAttr(index_o2x_So_roce_16O, io)
           roce_HDO(n) = o2x_e%rAttr(index_o2x_So_roce_HDO, io)
           roce_18O(n) = o2x_e%rAttr(index_o2x_So_roce_18O, io)
+          roce_17O(n) = o2x_e%rAttr(index_o2x_So_roce_17O, io)
+          roce_HTO(n) = o2x_e%rAttr(index_o2x_So_roce_HTO, io)
        enddo
        call mct_aVect_clean(a2x_e)
        call mct_aVect_clean(o2x_e)
@@ -1080,11 +1125,13 @@ contains
           call shr_sys_abort(trim(subname)//' ERROR cannot use flux_diurnal with UA flux scheme')
        endif
        call shr_flux_atmocn_diurnal (nloc_a2o , zbot , ubot, vbot, thbot, &
-            shum , shum_16O , shum_HDO, shum_18O, dens , tbot, uocn, vocn , &
+            shum , shum_16O , shum_HDO, shum_18O, shum_17O, shum_HTO, &
+            dens , tbot, uocn, vocn , &
             tocn , emask, seq_flux_atmocn_minwind, &
             sen , lat , lwup , &
-            roce_16O, roce_HDO, roce_18O,    &
-            evap , evap_16O, evap_HDO, evap_18O, taux , tauy, tref, qref , &
+            roce_16O, roce_HDO, roce_18O, roce_17O, roce_HTO,  &
+            evap , evap_16O, evap_HDO, evap_18O, evap_17O, evap_HTO, &
+            taux , tauy, tref, qref , &
             uGust, lwdn , swdn , swup, prec, &
             fswpen, ocnsal, ocn_prognostic, flux_diurnal,   &
             ocn_surface_flux_scheme, &
@@ -1097,19 +1144,23 @@ contains
             cold_start=cold_start)
     else if (ocn_surface_flux_scheme.eq.2) then
        call shr_flux_atmOcn_UA(nloc_a2o , zbot , ubot, vbot, thbot, &
-            shum , shum_16O , shum_HDO, shum_18O, dens , tbot, pslv, &
+            shum , shum_16O , shum_HDO, shum_18O, shum_17O, shum_HTO, &
+            dens , tbot, pslv, &
             uocn, vocn , tocn , emask, sen , lat , lwup , &
-            roce_16O, roce_HDO, roce_18O,    &
-            evap , evap_16O, evap_HDO, evap_18O, taux, tauy, tref, qref , &
+            roce_16O, roce_HDO, roce_18O, roce_17O, roce_HTO,  &
+            evap , evap_16O, evap_HDO, evap_18O, evap_17O, evapo_HTO, &
+            taux, tauy, tref, qref , &
             duu10n,ustar, re  , ssq , missval = 0.0_r8 )
     else
 
        call shr_flux_atmocn (nloc_a2o , zbot , ubot, vbot, thbot, &
-            shum , shum_16O , shum_HDO, shum_18O, dens , tbot, uocn, vocn , &
+            shum , shum_16O , shum_HDO, shum_18O, shum_17O, shum_HTO, &
+            dens , tbot, uocn, vocn , &
             tocn , emask, seq_flux_atmocn_minwind, &
             sen , lat , lwup , &
-            roce_16O, roce_HDO, roce_18O,    &
-            evap , evap_16O, evap_HDO, evap_18O, taux, tauy, tref, qref , &
+            roce_16O, roce_HDO, roce_18O, roce_17O, roce_HTO,   &
+            evap , evap_16O, evap_HDO, evap_18O, evap_17O, evap_HTO, &
+            taux, tauy, tref, qref , &
             ocn_surface_flux_scheme, &
             duu10n,ustar, re  , ssq , missval = 0.0_r8 )
     endif
@@ -1141,6 +1192,8 @@ contains
     index_evap_16O = mct_aVect_indexRA(xaop_ae,"Faox_evap_16O", perrWith='quiet')
     index_evap_HDO = mct_aVect_indexRA(xaop_ae,"Faox_evap_HDO", perrWith='quiet')
     index_evap_18O = mct_aVect_indexRA(xaop_ae,"Faox_evap_18O", perrWith='quiet')
+    index_evap_17O = mct_aVect_indexRA(xaop_ae,"Faox_evap_17O", perrWith='quiet')
+    index_evap_HTO = mct_aVect_indexRA(xaop_ae,"Faox_evap_HTO", perrWith='quiet')
     index_lwup   = mct_aVect_indexRA(xaop_ae,"Faox_lwup")
     index_sumwt  = mct_aVect_indexRA(xaop_ae,"sumwt")
 
@@ -1162,6 +1215,8 @@ contains
        if ( index_evap_16O /= 0 ) xaop_oe%rAttr(index_evap_16O ,io) = xaop_oe%rAttr(index_evap_16O  ,io) + evap_16O(n)* wt
        if ( index_evap_HDO /= 0 ) xaop_oe%rAttr(index_evap_HDO ,io) = xaop_oe%rAttr(index_evap_HDO  ,io) + evap_HDO(n)* wt
        if ( index_evap_18O /= 0 ) xaop_oe%rAttr(index_evap_18O ,io) = xaop_oe%rAttr(index_evap_18O  ,io) + evap_18O(n)* wt
+       if ( index_evap_17O /= 0 ) xaop_oe%rAttr(index_evap_17O ,io) = xaop_oe%rAttr(index_evap_17O  ,io) + evap_17O(n)* wt
+       if ( index_evap_HTO /= 0 ) xaop_oe%rAttr(index_evap_HTO ,io) = xaop_oe%rAttr(index_evap_HTO  ,io) + evap_HTO(n)* wt
        xaop_oe%rAttr(index_tref  ,io) = xaop_oe%rAttr(index_tref  ,io) + tref(n)* wt
        xaop_oe%rAttr(index_qref  ,io) = xaop_oe%rAttr(index_qref  ,io) + qref(n)* wt
        xaop_oe%rAttr(index_ustar ,io) = xaop_oe%rAttr(index_ustar ,io) + ustar(n)*wt   ! friction velocity
@@ -1196,6 +1251,8 @@ contains
        if ( index_evap_16O /= 0 ) xaop_ae%rAttr(index_evap_16O ,ia) = xaop_ae%rAttr(index_evap_16O  ,ia) + evap_16O(n)* wt
        if ( index_evap_HDO /= 0 ) xaop_ae%rAttr(index_evap_HDO ,ia) = xaop_ae%rAttr(index_evap_HDO  ,ia) + evap_HDO(n)* wt
        if ( index_evap_18O /= 0 ) xaop_ae%rAttr(index_evap_18O ,ia) = xaop_ae%rAttr(index_evap_18O  ,ia) + evap_18O(n)* wt
+       if ( index_evap_17O /= 0 ) xaop_ae%rAttr(index_evap_17O ,ia) = xaop_ae%rAttr(index_evap_17O  ,ia) + evap_17O(n)* wt
+       if ( index_evap_HTO /= 0 ) xaop_ae%rAttr(index_evap_HTO ,ia) = xaop_ae%rAttr(index_evap_HTO  ,ia) + evap_HTO(n)* wt
        xaop_ae%rAttr(index_tref  ,ia) = xaop_ae%rAttr(index_tref  ,ia) + tref(n)* wt
        xaop_ae%rAttr(index_qref  ,ia) = xaop_ae%rAttr(index_qref  ,ia) + qref(n)* wt
        xaop_ae%rAttr(index_ustar ,ia) = xaop_ae%rAttr(index_ustar ,ia) + ustar(n)*wt   ! friction velocity
@@ -1317,6 +1374,8 @@ contains
        index_xao_Faox_evap_16O = mct_aVect_indexRA(xao,'Faox_evap_16O', perrWith='quiet')
        index_xao_Faox_evap_HDO = mct_aVect_indexRA(xao,'Faox_evap_HDO', perrWith='quiet')
        index_xao_Faox_evap_18O = mct_aVect_indexRA(xao,'Faox_evap_18O', perrWith='quiet')
+       index_xao_Faox_evap_17O = mct_aVect_indexRA(xao,'Faox_evap_17O', perrWith='quiet')
+       index_xao_Faox_evap_HTO = mct_aVect_indexRA(xao,'Faox_evap_HTO', perrWith='quiet')
        index_xao_Faox_lwup = mct_aVect_indexRA(xao,'Faox_lwup')
        index_xao_Faox_swdn = mct_aVect_indexRA(xao,'Faox_swdn')
        index_xao_Faox_swup = mct_aVect_indexRA(xao,'Faox_swup')
@@ -1351,6 +1410,8 @@ contains
        index_a2x_Sa_shum_16O   = mct_aVect_indexRA(a2x,'Sa_shum_16O', perrWith='quiet')
        index_a2x_Sa_shum_HDO   = mct_aVect_indexRA(a2x,'Sa_shum_HDO', perrWith='quiet')
        index_a2x_Sa_shum_18O   = mct_aVect_indexRA(a2x,'Sa_shum_18O', perrWith='quiet')
+       index_a2x_Sa_shum_17O   = mct_aVect_indexRA(a2x,'Sa_shum_17O', perrWith='quiet')
+       index_a2x_Sa_shum_HTO   = mct_aVect_indexRA(a2x,'Sa_shum_HTO', perrWith='quiet')
        index_a2x_Sa_dens   = mct_aVect_indexRA(a2x,'Sa_dens')
        index_a2x_Faxa_lwdn = mct_aVect_indexRA(a2x,'Faxa_lwdn')
        index_a2x_Faxa_rainc= mct_aVect_indexRA(a2x,'Faxa_rainc')
@@ -1366,6 +1427,8 @@ contains
        index_o2x_So_roce_16O = mct_aVect_indexRA(o2x,'So_roce_16O', perrWith='quiet')
        index_o2x_So_roce_HDO = mct_aVect_indexRA(o2x,'So_roce_HDO', perrWith='quiet')
        index_o2x_So_roce_18O = mct_aVect_indexRA(o2x,'So_roce_18O', perrWith='quiet')
+       index_o2x_So_roce_17O = mct_aVect_indexRA(o2x,'So_roce_17O', perrWith='quiet')
+       index_o2x_So_roce_HTO = mct_aVect_indexRA(o2x,'So_roce_HTO', perrWith='quiet')
        call shr_flux_adjust_constants(flux_convergence_tolerance=flux_convergence, &
             flux_convergence_max_iteration=flux_max_iteration, &
             coldair_outbreak_mod=coldair_outbreak_mod)
@@ -1403,9 +1466,13 @@ contains
           shum_16O(n) = 1.e-2_r8 ! H216O specific humidity ~ kg/kg
           shum_HDO(n) = 1.e-2_r8 ! HD16O specific humidity ~ kg/kg
           shum_18O(n) = 1.e-2_r8 ! H218O specific humidity ~ kg/kg
+          shum_17O(n) = 1.e-2_r8 ! H217O specific humidity ~ kg/kg
+          shum_HTO(n) = 1.e-2_r8 ! HT16O specific humidity ~ kg/kg
           roce_16O(n) = 1.0_r8   ! H216O surface ratio     ~ mol/mol
           roce_HDO(n) = 1.0_r8   ! HDO   surface ratio     ~ mol/mol
           roce_18O(n) = 1.0_r8   ! H218O surface ratio     ~ mol/mol
+          roce_17O(n) = 1.0_r8   ! H217O surface ratio     ~ mol/mol
+          roce_HTO(n) = 1.0_r8   ! HT16O surface ratio     ~ mol/mol
           dens(n) =   1.0_r8 ! atm density                ~ kg/m^3
           tbot(n) = 300.0_r8 ! atm temperature            ~ Kelvin
           pslv(n) = 101300.0_r8  ! sea level pressure      ~ Pa
@@ -1449,6 +1516,8 @@ contains
              if ( index_a2x_Sa_shum_16O /= 0 ) shum_16O(n) = a2x%rAttr(index_a2x_Sa_shum_16O,n)
              if ( index_a2x_Sa_shum_HDO /= 0 ) shum_HDO(n) = a2x%rAttr(index_a2x_Sa_shum_HDO,n)
              if ( index_a2x_Sa_shum_18O /= 0 ) shum_18O(n) = a2x%rAttr(index_a2x_Sa_shum_18O,n)
+             if ( index_a2x_Sa_shum_17O /= 0 ) shum_17O(n) = a2x%rAttr(index_a2x_Sa_shum_17O,n)
+             if ( index_a2x_Sa_shum_HTO /= 0 ) shum_HTO(n) = a2x%rAttr(index_a2x_Sa_shum_HTO,n)
              dens(n) = a2x%rAttr(index_a2x_Sa_dens,n)
              tbot(n) = a2x%rAttr(index_a2x_Sa_tbot,n)
              pslv(n) = a2x%rAttr(index_a2x_Sa_pslv,n)
@@ -1458,6 +1527,8 @@ contains
              if ( index_o2x_So_roce_16O /= 0 ) roce_16O(n) = o2x%rAttr(index_o2x_So_roce_16O, n)
              if ( index_o2x_So_roce_HDO /= 0 ) roce_HDO(n) = o2x%rAttr(index_o2x_So_roce_HDO, n)
              if ( index_o2x_So_roce_18O /= 0 ) roce_18O(n) = o2x%rAttr(index_o2x_So_roce_18O, n)
+             if ( index_o2x_So_roce_17O /= 0 ) roce_17O(n) = o2x%rAttr(index_o2x_So_roce_17O, n)
+             if ( index_o2x_So_roce_HTO /= 0 ) roce_HTO(n) = o2x%rAttr(index_o2x_So_roce_HTO, n)
              !--- mask missing atm or ocn data if found
              if (dens(n) < 1.0e-12 .or. tocn(n) < 1.0) then
                 emask(n) = 0
@@ -1505,11 +1576,13 @@ contains
        endif
 
        call shr_flux_atmocn_diurnal (nloc , zbot , ubot, vbot, thbot, &
-            shum , shum_16O , shum_HDO, shum_18O, dens , tbot, uocn, vocn , &
+            shum , shum_16O , shum_HDO, shum_18O, shum_17O, shum_HTO, &
+            dens , tbot, uocn, vocn , &
             tocn , emask, seq_flux_atmocn_minwind, &
             sen , lat , lwup , &
-            roce_16O, roce_HDO, roce_18O,    &
-            evap , evap_16O, evap_HDO, evap_18O, taux , tauy, tref, qref , &
+            roce_16O, roce_HDO, roce_18O, roce_17O, roce_HTO,  &
+            evap , evap_16O, evap_HDO, evap_18O, evap_17O, evap_HTO, &
+            taux , tauy, tref, qref , &
             uGust, lwdn , swdn , swup, prec, &
             fswpen, ocnsal, ocn_prognostic, flux_diurnal,    &
             ocn_surface_flux_scheme, &
@@ -1525,18 +1598,22 @@ contains
             cold_start=cold_start)
     else if (ocn_surface_flux_scheme.eq.2) then
        call shr_flux_atmOcn_UA(nloc , zbot , ubot, vbot, thbot, &
-            shum , shum_16O , shum_HDO, shum_18O, dens , tbot, pslv, &
+            shum , shum_16O , shum_HDO, shum_18O, shum_17O, shum_HTO, &
+            dens , tbot, pslv, &
             uocn, vocn , tocn , emask, sen , lat , lwup , &
-            roce_16O, roce_HDO, roce_18O,    &
-            evap , evap_16O, evap_HDO, evap_18O, taux , tauy, tref, qref , &
+            roce_16O, roce_HDO, roce_18O, roce_17O, roce_HTO,   &
+            evap , evap_16O, evap_HDO, evap_18O, evap_17O, evap_HTO, &
+            taux , tauy, tref, qref , &
             duu10n,ustar, re  , ssq)
     else
        call shr_flux_atmocn (nloc , zbot , ubot, vbot, thbot, &
-            shum , shum_16O , shum_HDO, shum_18O, dens , tbot, uocn, vocn , &
+            shum , shum_16O , shum_HDO, shum_18O, shum_17O, shum_HTO, &
+            dens , tbot, uocn, vocn , &
             tocn , emask, seq_flux_atmocn_minwind, &
             sen , lat , lwup , &
-            roce_16O, roce_HDO, roce_18O,    &
-            evap , evap_16O, evap_HDO, evap_18O, taux , tauy, tref, qref , &
+            roce_16O, roce_HDO, roce_18O, roce_17O, roce_HTO,  &
+            evap , evap_16O, evap_HDO, evap_18O, evap_17O, evap_HTO, &
+            taux , tauy, tref, qref , &
             ocn_surface_flux_scheme, &
             duu10n,ustar, re  , ssq)
        !missval should not be needed if flux calc
@@ -1554,6 +1631,8 @@ contains
           if ( index_xao_Faox_evap_16O /= 0 ) xao%rAttr(index_xao_Faox_evap_16O,n) = evap_16O(n)
           if ( index_xao_Faox_evap_HDO /= 0 ) xao%rAttr(index_xao_Faox_evap_HDO,n) = evap_HDO(n)
           if ( index_xao_Faox_evap_18O /= 0 ) xao%rAttr(index_xao_Faox_evap_18O,n) = evap_18O(n)
+          if ( index_xao_Faox_evap_17O /= 0 ) xao%rAttr(index_xao_Faox_evap_17O,n) = evap_17O(n)
+          if ( index_xao_Faox_evap_HTO /= 0 ) xao%rAttr(index_xao_Faox_evap_HTO,n) = evap_HTO(n)
           xao%rAttr(index_xao_So_tref  ,n) = tref(n)
           xao%rAttr(index_xao_So_qref  ,n) = qref(n)
           xao%rAttr(index_xao_So_ustar ,n) = ustar(n)  ! friction velocity

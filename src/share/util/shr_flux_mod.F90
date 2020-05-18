@@ -138,15 +138,15 @@ end subroutine shr_flux_adjust_constants
 !
 ! !INTERFACE: ------------------------------------------------------------------
 
-SUBROUTINE shr_flux_atmOcn(nMax  ,zbot  ,ubot  ,vbot  ,thbot ,   & 
-           &               qbot  ,s16O  ,sHDO  ,s18O  ,rbot  ,   &
-           &               tbot  ,us    ,vs    ,   &
+SUBROUTINE shr_flux_atmOcn(nMax  ,zbot  ,ubot  ,vbot  ,thbot ,       &
+           &               qbot  ,s16O  ,sHDO  ,s18O  ,s17O  ,sHTO , &
+           &               rbot  ,tbot  ,us    ,vs    ,   &
            &               ts    ,mask  , seq_flux_atmocn_minwind, &
            &               sen   ,lat   ,lwup  ,   &
-           &               r16O, rhdo, r18O, &
-           &               evap  ,evap_16O, evap_HDO, evap_18O, &
-           &               taux  ,tauy  ,tref  ,qref  ,   &
-           &               ocn_surface_flux_scheme, &
+           &               r16O  ,rhdo  ,r18O  ,r17O ,rHTO , &
+           &               evap  ,evap_16O ,evap_HDO ,evap_18O, &
+           &               evap_17O ,evap_HTO  ,taux ,tauy  ,tref ,   &
+           &               qref, ocn_surface_flux_scheme, &
            &               duu10n,  ustar_sv   ,re_sv ,ssq_sv,   &
            &               missval    )
 
@@ -170,9 +170,13 @@ SUBROUTINE shr_flux_atmOcn(nMax  ,zbot  ,ubot  ,vbot  ,thbot ,   &
    real(R8)   ,intent(in) :: s16O (nMax) ! atm H216O tracer conc. (kg/kg)
    real(R8)   ,intent(in) :: sHDO (nMax) ! atm HDO tracer conc.  (kg/kg)
    real(R8)   ,intent(in) :: s18O (nMax) ! atm H218O tracer conc. (kg/kg)
+   real(R8)   ,intent(in) :: s17O (nMax) ! atm H217O tracer conc. (kg/kg)
+   real(R8)   ,intent(in) :: sHTO (nMax) ! atm HTO tracer conc. (kg/kg)
    real(R8)   ,intent(in) :: r16O (nMax) ! ocn H216O tracer ratio/Rstd
    real(R8)   ,intent(in) :: rHDO (nMax) ! ocn HDO tracer ratio/Rstd
    real(R8)   ,intent(in) :: r18O (nMax) ! ocn H218O tracer ratio/Rstd
+   real(R8)   ,intent(in) :: r17O (nMax) ! ocn H217O tracer ratio/Rstd
+   real(R8)   ,intent(in) :: rHTO (nMax) ! ocn HTO tracer ratio/Rstd
    real(R8)   ,intent(in) :: rbot (nMax) ! atm air density       (kg/m^3)
    real(R8)   ,intent(in) :: tbot (nMax) ! atm T                 (K)
    real(R8)   ,intent(in) :: us   (nMax) ! ocn u-velocity        (m/s)
@@ -188,6 +192,8 @@ SUBROUTINE shr_flux_atmOcn(nMax  ,zbot  ,ubot  ,vbot  ,thbot ,   &
    real(R8),intent(out)  ::  evap_16O (nMax) ! water flux: evap ((kg/s/m^2)
    real(R8),intent(out)  ::  evap_HDO (nMax) ! water flux: evap ((kg/s)/m^2)
    real(R8),intent(out)  ::  evap_18O (nMax) ! water flux: evap ((kg/s/m^2)
+   real(R8),intent(out)  ::  evap_17O (nMax) ! water flux: evap ((kg/s/m^2)
+   real(R8),intent(out)  ::  evap_HTO (nMax) ! water flux: evap ((kg/s/m^2)
    real(R8),intent(out)  ::  taux (nMax) ! surface stress, zonal      (N)
    real(R8),intent(out)  ::  tauy (nMax) ! surface stress, maridional (N)
    real(R8),intent(out)  ::  tref (nMax) ! diag:  2m ref height T     (K)
@@ -420,6 +426,10 @@ SUBROUTINE shr_flux_atmOcn(nMax  ,zbot  ,ubot  ,vbot  ,thbot ,   &
                          qbot(n),evap(n))
         call wiso_flxoce(4,rbot(n),zbot(n),s18O(n),ts(n),r18O(n),ustar,re,ssq, evap_18O(n), &
                          qbot(n),evap(n))
+        call wiso_flxoce(5,rbot(n),zbot(n),s17O(n),ts(n),r17O(n),ustar,re,ssq, evap_17O(n), &
+                         qbot(n),evap(n))
+        call wiso_flxoce(6,rbot(n),zbot(n),sHTO(n),ts(n),rHTO(n),ustar,re,ssq, evap_HTO(n), &
+                         qbot(n),evap(n))
 
         !------------------------------------------------------------
         ! compute diagnositcs: 2m ref T & Q, 10m wind speed squared
@@ -454,6 +464,8 @@ SUBROUTINE shr_flux_atmOcn(nMax  ,zbot  ,ubot  ,vbot  ,thbot ,   &
         evap_16O (n) = spval !water tracer flux (kg/s)/m^2)
         evap_HDO (n) = spval !HDO tracer flux  (kg/s)/m^2)
         evap_18O (n) = spval !H218O tracer flux (kg/s)/m^2)
+        evap_17O (n) = spval !H217O tracer flux (kg/s)/m^2)
+        evap_HTO (n) = spval !HTO tracer flux (kg/s)/m^2)
         taux  (n) = spval  ! x surface stress (N)
         tauy  (n) = spval  ! y surface stress (N)
         tref  (n) = spval  !  2m reference height temperature (K)
@@ -523,6 +535,10 @@ SUBROUTINE shr_flux_atmOcn(nMax  ,zbot  ,ubot  ,vbot  ,thbot ,   &
                          qbot(n),evap(n))
         call wiso_flxoce(4,rbot(n),zbot(n),s18O(n),ts(n),r18O(n),ustar,re,ssq, evap_18O(n), &
                          qbot(n),evap(n))
+        call wiso_flxoce(5,rbot(n),zbot(n),s17O(n),ts(n),r17O(n),ustar,re,ssq, evap_17O(n), &
+                         qbot(n),evap(n))
+        call wiso_flxoce(6,rbot(n),zbot(n),sHTO(n),ts(n),rHTO(n),ustar,re,ssq, evap_HTO(n), &
+                         qbot(n),evap(n))
 
         !------------------------------------------------------------
         ! compute diagnositcs: 2m ref T & Q, 10m wind speed squared
@@ -546,9 +562,11 @@ SUBROUTINE shr_flux_atmOcn(nMax  ,zbot  ,ubot  ,vbot  ,thbot ,   &
         lat      (n) = spval  ! latent           heat flux  (W/m^2)
         lwup     (n) = spval  ! long-wave upward heat flux  (W/m^2)
         evap     (n) = spval  ! evaporative water flux ((kg/s)/m^2)
-        evap_16O (n) = spval  ! water tracer flux (kg/s)/m^2) 
+        evap_16O (n) = spval  ! water tracer flux (kg/s)/m^2)
         evap_HDO (n) = spval  ! HDO tracer flux  (kg/s)/m^2)
         evap_18O (n) = spval  ! H218O tracer flux (kg/s)/m^2)
+        evap_17O (n) = spval  ! H218O tracer flux (kg/s)/m^2)
+        evap_HTO (n) = spval  ! HTO tracer flux (kg/s)/m^2)
         taux     (n) = spval  ! x surface stress (N)
         tauy     (n) = spval  ! y surface stress (N)
         tref     (n) = spval  !  2m reference height temperature (K)
@@ -600,11 +618,13 @@ END subroutine shr_flux_atmOcn
 
 SUBROUTINE shr_flux_atmOcn_UA(   &
            &               nMax  ,zbot  ,ubot  ,vbot  ,thbot ,  &
-           &               qbot  ,s16O  ,sHDO  ,s18O  ,rbot  ,   & 
+           &               qbot  ,s16O  ,sHDO  ,s18O  ,s17O  ,HTO ,&
+           &               rbot  ,   & 
            &               tbot  , pslv ,us    , vs   ,   &
            &               ts    ,mask  ,sen   ,lat   ,lwup  ,   &
-           &               r16O, rhdo, r18O, &
+           &               r16O  ,rhdo  ,r18O  ,r17O  ,rHTO  ,   &
            &               evap  ,evap_16O, evap_HDO, evap_18O, &
+           &               evap_17O ,evap_HTO, &
            &               taux  ,tauy  ,tref  ,qref  ,   &
            &               duu10n,  ustar_sv   ,re_sv ,ssq_sv,   &
            &               missval    )
@@ -628,9 +648,11 @@ SUBROUTINE shr_flux_atmOcn_UA(   &
    real(R8)   ,intent(in) :: s16O (nMax) ! atm H216O tracer conc. (kg/kg)
    real(R8)   ,intent(in) :: sHDO (nMax) ! atm HDO tracer conc.  (kg/kg)
    real(R8)   ,intent(in) :: s18O (nMax) ! atm H218O tracer conc. (kg/kg)
-   real(R8)   ,intent(in) :: r16O (nMax) ! ocn H216O tracer ratio/Rstd  
-   real(R8)   ,intent(in) :: rHDO (nMax) ! ocn HDO tracer ratio/Rstd   
-   real(R8)   ,intent(in) :: r18O (nMax) ! ocn H218O tracer ratio/Rstd   
+   real(R8)   ,intent(in) :: r16O (nMax) ! ocn H216O tracer ratio/Rstd
+   real(R8)   ,intent(in) :: rHDO (nMax) ! ocn HD16O tracer ratio/Rstd
+   real(R8)   ,intent(in) :: r18O (nMax) ! ocn H218O tracer ratio/Rstd
+   real(R8)   ,intent(in) :: r17O (nMax) ! ocn H217O tracer ratio/Rstd
+   real(R8)   ,intent(in) :: rHTO (nMax) ! ocn HT16O tracer ratio/Rstd
    real(R8)   ,intent(in) :: rbot (nMax) ! atm air density       (kg/m^3)
    real(R8)   ,intent(in) :: tbot (nMax) ! atm T                 (K) 
    real(R8)   ,intent(in) :: pslv (nMax) ! sea level pressure    (Pa) 
@@ -646,6 +668,8 @@ SUBROUTINE shr_flux_atmOcn_UA(   &
    real(R8),intent(out)  ::  evap_16O (nMax) ! water flux: evap ((kg/s/m^2)
    real(R8),intent(out)  ::  evap_HDO (nMax) ! water flux: evap ((kg/s)/m^2)
    real(R8),intent(out)  ::  evap_18O (nMax) ! water flux: evap ((kg/s/m^2)
+   real(R8),intent(out)  ::  evap_17O (nMax) ! water flux: evap ((kg/s/m^2)
+   real(R8),intent(out)  ::  evap_HTO (nMax) ! water flux: evap ((kg/s/m^2)
    real(R8),intent(out)  ::  taux (nMax) ! surface stress, zonal      (N)
    real(R8),intent(out)  ::  tauy (nMax) ! surface stress, maridional (N)
    real(R8),intent(out)  ::  tref (nMax) ! diag:  2m ref height T     (K)
@@ -939,6 +963,10 @@ SUBROUTINE shr_flux_atmOcn_UA(   &
                          qbot(n),evap(n))
         call wiso_flxoce(4,rbot(n),zbot(n),s18O(n),ts(n),r18O(n),ustar,re,ssq, evap_18O(n), &
                          qbot(n),evap(n))
+        call wiso_flxoce(5,rbot(n),zbot(n),s17O(n),ts(n),r17O(n),ustar,re,ssq, evap_17O(n), &
+                         qbot(n),evap(n))
+        call wiso_flxoce(6,rbot(n),zbot(n),s17O(n),ts(n),r17O(n),ustar,re,ssq, evap_17O(n), &
+                         qbot(n),evap(n))
 
         !------------------------------------------------------------
         ! compute diagnositcs: 2m ref T & Q, 10m wind speed squared
@@ -1017,9 +1045,11 @@ SUBROUTINE shr_flux_atmOcn_UA(   &
         lat   (n) = spval  ! latent           heat flux  (W/m^2)
         lwup  (n) = spval  ! long-wave upward heat flux  (W/m^2)
         evap  (n) = spval  ! evaporative water flux ((kg/s)/m^2)
-        evap_16O (n) = spval !water tracer flux (kg/s)/m^2) 
+        evap_16O (n) = spval !water tracer flux (kg/s)/m^2)
         evap_HDO (n) = spval !HDO tracer flux  (kg/s)/m^2)
         evap_18O (n) = spval !H218O tracer flux (kg/s)/m^2)
+        evap_17O (n) = spval !H217O tracer flux (kg/s)/m^2)
+        evap_HTO (n) = spval !HTO tracer flux (kg/s)/m^2)
         taux  (n) = spval  ! x surface stress (N)
         tauy  (n) = spval  ! y surface stress (N)
         tref  (n) = spval  !  2m reference height temperature (K)
@@ -1151,12 +1181,12 @@ end function cuberoot
 
 SUBROUTINE shr_flux_atmOcn_diurnal &
                           (nMax  ,zbot  ,ubot  ,vbot  ,thbot ,             &
-                           qbot  ,s16O  ,sHDO  ,s18O  ,rbot  ,             &
+                           qbot  ,s16O  ,sHDO  ,s18O  ,s17O  ,sHTO ,rbot  ,&
                            tbot  ,us    ,vs    ,                           &
                            ts    ,mask  , seq_flux_atmocn_minwind,         &
                            sen   ,lat   ,lwup  ,                           &
-                           r16O  ,rhdo  ,r18O  ,evap  ,evap_16O,           &
-                           evap_HDO     ,evap_18O,                         &
+                           r16O  ,rhdo  ,r18O  ,r17O ,rHTO ,evap ,evap_16O,&
+                           evap_HDO     ,evap_18O     ,evap_17O  ,evap_HTO,&
                            taux  ,tauy  ,tref  ,qref  ,                    &
                            uGust, lwdn , swdn , swup, prec   ,             &
                            swpen, ocnsal, ocn_prognostic, flux_diurnal,    &
@@ -1187,9 +1217,12 @@ SUBROUTINE shr_flux_atmOcn_diurnal &
    real(R8)   ,intent(in) :: s16O (nMax) ! atm H216O tracer conc. (kg/kg)
    real(R8)   ,intent(in) :: sHDO (nMax) ! atm HDO tracer conc.  (kg/kg)
    real(R8)   ,intent(in) :: s18O (nMax) ! atm H218O tracer conc. (kg/kg)
+   real(R8)   ,intent(in) :: s17O (nMax) ! atm H218O tracer conc. (kg/kg)
    real(R8)   ,intent(in) :: r16O (nMax) ! ocn H216O tracer ratio/Rstd
-   real(R8)   ,intent(in) :: rHDO (nMax) ! ocn HDO tracer ratio/Rstd
+   real(R8)   ,intent(in) :: rHDO (nMax) ! ocn HD16O tracer ratio/Rstd
    real(R8)   ,intent(in) :: r18O (nMax) ! ocn H218O tracer ratio/Rstd
+   real(R8)   ,intent(in) :: r17O (nMax) ! ocn H217O tracer ratio/Rstd
+   real(R8)   ,intent(in) :: rHTO (nMax) ! ocn HT16O tracer ratio/Rstd
    real(R8)   ,intent(in) :: rbot (nMax) ! atm air density       (kg/m^3)
    real(R8)   ,intent(in) :: tbot (nMax) ! atm T                 (K)
    real(R8)   ,intent(in) :: us   (nMax) ! ocn u-velocity        (m/s)
@@ -1245,6 +1278,8 @@ SUBROUTINE shr_flux_atmOcn_diurnal &
    real(R8),intent(out)  ::  evap_16O (nMax) ! water flux: evap ((kg/s/m^2)
    real(R8),intent(out)  ::  evap_HDO (nMax) ! water flux: evap ((kg/s)/m^2)
    real(R8),intent(out)  ::  evap_18O (nMax) ! water flux: evap ((kg/s/m^2)
+   real(R8),intent(out)  ::  evap_17O (nMax) ! water flux: evap ((kg/s/m^2)
+   real(R8),intent(out)  ::  evap_HTO (nMax) ! water flux: evap ((kg/s/m^2)
    real(R8),intent(out)  ::  taux (nMax) ! surface stress, zonal      (N)
    real(R8),intent(out)  ::  tauy (nMax) ! surface stress, maridional (N)
    real(R8),intent(out)  ::  tref (nMax) ! diag:  2m ref height T     (K)
@@ -1760,6 +1795,10 @@ SUBROUTINE shr_flux_atmOcn_diurnal &
                           qbot(n),evap(n))
          call wiso_flxoce(4,rbot(n),zbot(n),s18O(n),ts(n),r18O(n),ustar,re,ssq, evap_18O(n),&
                           qbot(n),evap(n))
+         call wiso_flxoce(5,rbot(n),zbot(n),s17O(n),ts(n),r17O(n),ustar,re,ssq, evap_17O(n),&
+                          qbot(n),evap(n))
+         call wiso_flxoce(4,rbot(n),zbot(n),sHTO(n),ts(n),rHTO(n),ustar,re,ssq, evap_HTO(n),&
+                          qbot(n),evap(n))
 
          !------------------------------------------------------------
          ! compute diagnostics: 2m ref T & Q, 10m wind speed squared
@@ -1888,6 +1927,8 @@ SUBROUTINE shr_flux_atmOcn_diurnal &
             evap_16O (n) = spval  ! water tracer flux (kg/s)/m^2)
             evap_HDO (n) = spval  ! HDO tracer flux  (kg/s)/m^2)
             evap_18O (n) = spval  ! H218O tracer flux (kg/s)/m^2)
+            evap_17O (n) = spval  ! H217O tracer flux (kg/s)/m^2)
+            evap_HTO (n) = spval  ! HTO tracer flux (kg/s)/m^2
             taux  (n)    = spval  ! x surface stress (N)
             tauy  (n)    = spval  ! y surface stress (N)
             tref  (n)    = spval  ! 2m reference height temperature (K)

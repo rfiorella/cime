@@ -26,13 +26,8 @@ module water_isotopes
 !-----------------------------------------------------------------------
 
   use shr_kind_mod,  only: r8 => shr_kind_r8
-!  use abortutils,    only: endrun
+  use shr_sys_mod,   only: shr_sys_abort
   use shr_const_mod, only: SHR_CONST_TKTRIP
-!                           SHR_CONST_RSTD_H2ODEV, &
-!                           SHR_CONST_VSMOW_16O, &
-!                           SHR_CONST_VSMOW_18O, &
-!                           SHR_CONST_VSMOW_D , &
-!                           SHR_CONST_VSMOW_H
 
   implicit none
 
@@ -61,6 +56,7 @@ module water_isotopes
   public :: wiso_flxoce          ! calculate isotopic ocean evaporation.
   public :: wiso_ssatf           ! supersaturation function
   public :: wiso_heff            ! effective humidity function
+  public :: wiso_decay           ! radioactive decay (HTO)
 
   !Data checking routines:
 
@@ -632,6 +628,22 @@ end function wiso_akci
 
   return
 end subroutine wiso_flxoce
+
+!=======================================================================
+subroutine wiso_decay(isp, dtime, q, dqdcy)
+!-----------------------------------------------------------------------
+! Impliments radioactive decay (for tritium, etc)
+! Author: David Noone <david.noone@auckland.ac.nz>
+!-----------------------------------------------------------------------
+  integer , intent(in)  :: isp          ! species index (MUST BE isphto, for now)
+  real(r8), intent(in)  :: q            ! mass of stuff
+  real(r8), intent(in)  :: dtime        ! time interval of decay
+  real(r8), intent(out) :: dqdcy        ! change in mass due to decay
+!-----------------------------------------------------------------------
+  if (isp /= isphto) call shr_sys_abort('(wiso_decay) isp /= isphto: TRITIUM ONLY')
+    dqdcy = q * (0.5_r8**(dtime/hlhto) - 1._r8) / dtime
+  return
+end subroutine wiso_decay
 
 !=======================================================================
  function wiso_heff(h0)

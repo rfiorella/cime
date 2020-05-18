@@ -288,18 +288,30 @@ contains
     integer, save :: index_a2x_Faxa_snowl_16O
     integer, save :: index_x2i_Faxa_rain_16O
     integer, save :: index_x2i_Faxa_snow_16O
-    integer, save :: index_a2x_Faxa_rainc_18O
-    integer, save :: index_a2x_Faxa_rainl_18O
-    integer, save :: index_a2x_Faxa_snowc_18O
-    integer, save :: index_a2x_Faxa_snowl_18O
-    integer, save :: index_x2i_Faxa_rain_18O
-    integer, save :: index_x2i_Faxa_snow_18O
     integer, save :: index_a2x_Faxa_rainc_HDO
     integer, save :: index_a2x_Faxa_rainl_HDO
     integer, save :: index_a2x_Faxa_snowc_HDO
     integer, save :: index_a2x_Faxa_snowl_HDO
     integer, save :: index_x2i_Faxa_rain_HDO
     integer, save :: index_x2i_Faxa_snow_HDO
+    integer, save :: index_a2x_Faxa_rainc_18O
+    integer, save :: index_a2x_Faxa_rainl_18O
+    integer, save :: index_a2x_Faxa_snowc_18O
+    integer, save :: index_a2x_Faxa_snowl_18O
+    integer, save :: index_x2i_Faxa_rain_18O
+    integer, save :: index_x2i_Faxa_snow_18O
+    integer, save :: index_a2x_Faxa_rainc_17O
+    integer, save :: index_a2x_Faxa_rainl_17O
+    integer, save :: index_a2x_Faxa_snowc_17O
+    integer, save :: index_a2x_Faxa_snowl_17O
+    integer, save :: index_x2i_Faxa_rain_17O
+    integer, save :: index_x2i_Faxa_snow_17O
+    integer, save :: index_a2x_Faxa_rainc_HTO
+    integer, save :: index_a2x_Faxa_rainl_HTO
+    integer, save :: index_a2x_Faxa_snowc_HTO
+    integer, save :: index_a2x_Faxa_snowl_HTO
+    integer, save :: index_x2i_Faxa_rain_HTO
+    integer, save :: index_x2i_Faxa_snow_HTO
 
     !-----------------------------------------------------------------------
 
@@ -319,14 +331,6 @@ contains
        index_x2i_Faxa_rain_16O  = mct_aVect_indexRA(x2i_i,'Faxa_rain_16O' , perrWith='quiet')
        index_x2i_Faxa_snow_16O  = mct_aVect_indexRA(x2i_i,'Faxa_snow_16O' , perrWith='quiet')
        if ( index_x2i_Faxa_rain_16O /= 0 ) flds_wiso = .true.
-       ! H2_18O
-       index_a2x_Faxa_snowc_18O = mct_aVect_indexRA(a2x_i,'Faxa_snowc_18O', perrWith='quiet')
-       index_a2x_Faxa_snowl_18O = mct_aVect_indexRA(a2x_i,'Faxa_snowl_18O', perrWith='quiet')
-       index_a2x_Faxa_rainc_18O = mct_aVect_indexRA(a2x_i,'Faxa_rainc_18O', perrWith='quiet')
-       index_a2x_Faxa_rainl_18O = mct_aVect_indexRA(a2x_i,'Faxa_rainl_18O', perrWith='quiet')
-       index_x2i_Faxa_rain_18O  = mct_aVect_indexRA(x2i_i,'Faxa_rain_18O' , perrWith='quiet')
-       index_x2i_Faxa_snow_18O  = mct_aVect_indexRA(x2i_i,'Faxa_snow_18O' , perrWith='quiet')
-       if ( index_x2i_Faxa_rain_18O /= 0 ) flds_wiso = .true.
        ! HDO
        index_a2x_Faxa_snowc_HDO = mct_aVect_indexRA(a2x_i,'Faxa_snowc_HDO', perrWith='quiet')
        index_a2x_Faxa_snowl_HDO = mct_aVect_indexRA(a2x_i,'Faxa_snowl_HDO', perrWith='quiet')
@@ -335,6 +339,30 @@ contains
        index_x2i_Faxa_rain_HDO  = mct_aVect_indexRA(x2i_i,'Faxa_rain_HDO' , perrWith='quiet')
        index_x2i_Faxa_snow_HDO  = mct_aVect_indexRA(x2i_i,'Faxa_snow_HDO' , perrWith='quiet')
        if ( index_x2i_Faxa_rain_HDO /= 0 ) flds_wiso = .true.
+       ! H2_18O
+       index_a2x_Faxa_snowc_18O = mct_aVect_indexRA(a2x_i,'Faxa_snowc_18O', perrWith='quiet')
+       index_a2x_Faxa_snowl_18O = mct_aVect_indexRA(a2x_i,'Faxa_snowl_18O', perrWith='quiet')
+       index_a2x_Faxa_rainc_18O = mct_aVect_indexRA(a2x_i,'Faxa_rainc_18O', perrWith='quiet')
+       index_a2x_Faxa_rainl_18O = mct_aVect_indexRA(a2x_i,'Faxa_rainl_18O', perrWith='quiet')
+       index_x2i_Faxa_rain_18O  = mct_aVect_indexRA(x2i_i,'Faxa_rain_18O' , perrWith='quiet')
+       index_x2i_Faxa_snow_18O  = mct_aVect_indexRA(x2i_i,'Faxa_snow_18O' , perrWith='quiet')
+       if ( index_x2i_Faxa_rain_18O /= 0 ) flds_wiso = .true.
+       ! H2_17O
+       index_a2x_Faxa_snowc_17O = mct_aVect_indexRA(a2x_i,'Faxa_snowc_17O', perrWith='quiet')
+       index_a2x_Faxa_snowl_17O = mct_aVect_indexRA(a2x_i,'Faxa_snowl_17O', perrWith='quiet')
+       index_a2x_Faxa_rainc_17O = mct_aVect_indexRA(a2x_i,'Faxa_rainc_17O', perrWith='quiet')
+       index_a2x_Faxa_rainl_17O = mct_aVect_indexRA(a2x_i,'Faxa_rainl_17O', perrWith='quiet')
+       index_x2i_Faxa_rain_17O  = mct_aVect_indexRA(x2i_i,'Faxa_rain_17O' , perrWith='quiet')
+       index_x2i_Faxa_snow_17O  = mct_aVect_indexRA(x2i_i,'Faxa_snow_17O' , perrWith='quiet')
+       if ( index_x2i_Faxa_rain_17O /= 0 ) flds_wiso = .true.
+       ! HTO
+       index_a2x_Faxa_snowc_HTO = mct_aVect_indexRA(a2x_i,'Faxa_snowc_HTO', perrWith='quiet')
+       index_a2x_Faxa_snowl_HTO = mct_aVect_indexRA(a2x_i,'Faxa_snowl_HTO', perrWith='quiet')
+       index_a2x_Faxa_rainc_HTO = mct_aVect_indexRA(a2x_i,'Faxa_rainc_HTO', perrWith='quiet')
+       index_a2x_Faxa_rainl_HTO = mct_aVect_indexRA(a2x_i,'Faxa_rainl_HTO', perrWith='quiet')
+       index_x2i_Faxa_rain_HTO  = mct_aVect_indexRA(x2i_i,'Faxa_rain_HTO' , perrWith='quiet')
+       index_x2i_Faxa_snow_HTO  = mct_aVect_indexRA(x2i_i,'Faxa_snow_HTO' , perrWith='quiet')
+       if ( index_x2i_Faxa_rain_HTO /= 0 ) flds_wiso = .true.
 
        first_time = .false.
     end if
@@ -366,23 +394,37 @@ contains
                a2x_i%rAttr(index_a2x_Faxa_rainl_16O,i)
           x2i_i%rAttr(index_x2i_Faxa_snow_16O,i) = a2x_i%rAttr(index_a2x_Faxa_snowc_16O,i) + &
                a2x_i%rAttr(index_a2x_Faxa_snowl_16O,i)
-          !H2_18O
-          x2i_i%rAttr(index_x2i_Faxa_rain_18O,i) = a2x_i%rAttr(index_a2x_Faxa_rainc_18O,i) + &
-               a2x_i%rAttr(index_a2x_Faxa_rainl_18O,i)
-          x2i_i%rAttr(index_x2i_Faxa_snow_18O,i) = a2x_i%rAttr(index_a2x_Faxa_snowc_18O,i) + &
-               a2x_i%rAttr(index_a2x_Faxa_snowl_18O,i)
           !HDO
           x2i_i%rAttr(index_x2i_Faxa_rain_HDO,i) = a2x_i%rAttr(index_a2x_Faxa_rainc_HDO,i) + &
                a2x_i%rAttr(index_a2x_Faxa_rainl_HDO,i)
           x2i_i%rAttr(index_x2i_Faxa_snow_HDO,i) = a2x_i%rAttr(index_a2x_Faxa_snowc_HDO,i) + &
                a2x_i%rAttr(index_a2x_Faxa_snowl_HDO,i)
+          !H2_18O
+          x2i_i%rAttr(index_x2i_Faxa_rain_18O,i) = a2x_i%rAttr(index_a2x_Faxa_rainc_18O,i) + &
+               a2x_i%rAttr(index_a2x_Faxa_rainl_18O,i)
+          x2i_i%rAttr(index_x2i_Faxa_snow_18O,i) = a2x_i%rAttr(index_a2x_Faxa_snowc_18O,i) + &
+               a2x_i%rAttr(index_a2x_Faxa_snowl_18O,i)
+          !H2_17O
+          x2i_i%rAttr(index_x2i_Faxa_rain_17O,i) = a2x_i%rAttr(index_a2x_Faxa_rainc_17O,i) + &
+               a2x_i%rAttr(index_a2x_Faxa_rainl_17O,i)
+          x2i_i%rAttr(index_x2i_Faxa_snow_17O,i) = a2x_i%rAttr(index_a2x_Faxa_snowc_17O,i) + &
+               a2x_i%rAttr(index_a2x_Faxa_snowl_17O,i)
+          !HTO
+          x2i_i%rAttr(index_x2i_Faxa_rain_HTO,i) = a2x_i%rAttr(index_a2x_Faxa_rainc_HTO,i) + &
+               a2x_i%rAttr(index_a2x_Faxa_rainl_HTO,i)
+          x2i_i%rAttr(index_x2i_Faxa_snow_HTO,i) = a2x_i%rAttr(index_a2x_Faxa_snowc_HTO,i) + &
+               a2x_i%rAttr(index_a2x_Faxa_snowl_HTO,i)
 
           x2i_i%rAttr(index_x2i_Faxa_rain_16O,i) = x2i_i%rAttr(index_x2i_Faxa_rain_16O,i) * flux_epbalfact
           x2i_i%rAttr(index_x2i_Faxa_snow_16O,i) = x2i_i%rAttr(index_x2i_Faxa_snow_16O,i) * flux_epbalfact
-          x2i_i%rAttr(index_x2i_Faxa_rain_18O,i) = x2i_i%rAttr(index_x2i_Faxa_rain_18O,i) * flux_epbalfact
-          x2i_i%rAttr(index_x2i_Faxa_snow_18O,i) = x2i_i%rAttr(index_x2i_Faxa_snow_18O,i) * flux_epbalfact
           x2i_i%rAttr(index_x2i_Faxa_rain_HDO,i) = x2i_i%rAttr(index_x2i_Faxa_rain_HDO,i) * flux_epbalfact
           x2i_i%rAttr(index_x2i_Faxa_snow_HDO,i) = x2i_i%rAttr(index_x2i_Faxa_snow_HDO,i) * flux_epbalfact
+          x2i_i%rAttr(index_x2i_Faxa_rain_18O,i) = x2i_i%rAttr(index_x2i_Faxa_rain_18O,i) * flux_epbalfact
+          x2i_i%rAttr(index_x2i_Faxa_snow_18O,i) = x2i_i%rAttr(index_x2i_Faxa_snow_18O,i) * flux_epbalfact
+          x2i_i%rAttr(index_x2i_Faxa_rain_17O,i) = x2i_i%rAttr(index_x2i_Faxa_rain_17O,i) * flux_epbalfact
+          x2i_i%rAttr(index_x2i_Faxa_snow_17O,i) = x2i_i%rAttr(index_x2i_Faxa_snow_17O,i) * flux_epbalfact
+          x2i_i%rAttr(index_x2i_Faxa_rain_HTO,i) = x2i_i%rAttr(index_x2i_Faxa_rain_HTO,i) * flux_epbalfact
+          x2i_i%rAttr(index_x2i_Faxa_snow_HTO,i) = x2i_i%rAttr(index_x2i_Faxa_snow_HTO,i) * flux_epbalfact
 
        end do
     end if
@@ -412,15 +454,19 @@ contains
     integer, save :: index_l2x_Flrl_rofliq_16O
     integer, save :: index_l2x_Flrl_rofice_16O
     integer, save :: index_x2r_Flrl_rofliq_16O
+    integer, save :: index_l2x_Flrl_rofliq_HDO
+    integer, save :: index_l2x_Flrl_rofice_HDO
+    integer, save :: index_x2r_Flrl_rofliq_HDO
+    integer, save :: index_x2r_Flrl_rofice_HDO
     integer, save :: index_x2r_Flrl_rofice_16O
     integer, save :: index_l2x_Flrl_rofliq_18O
     integer, save :: index_l2x_Flrl_rofice_18O
     integer, save :: index_x2r_Flrl_rofliq_18O
     integer, save :: index_x2r_Flrl_rofice_18O
-    integer, save :: index_l2x_Flrl_rofliq_HDO
-    integer, save :: index_l2x_Flrl_rofice_HDO
-    integer, save :: index_x2r_Flrl_rofliq_HDO
-    integer, save :: index_x2r_Flrl_rofice_HDO
+    integer, save :: index_l2x_Flrl_rofliq_17O
+    integer, save :: index_l2x_Flrl_rofice_17O
+    integer, save :: index_x2r_Flrl_rofliq_17O
+    integer, save :: index_x2r_Flrl_rofice_17O
     integer, save :: index_lfrac
     logical, save :: first_time = .true.
     logical, save :: flds_wiso  = .false.
@@ -432,21 +478,37 @@ contains
        index_l2x_Flrl_rofice = mct_aVect_indexRA(l2x_r,'Flrl_rofice' )
        index_x2r_Flrl_rofliq = mct_aVect_indexRA(x2r_r,'Flrl_rofliq' )
        index_x2r_Flrl_rofice = mct_aVect_indexRA(x2r_r,'Flrl_rofice' )
+
        index_l2x_Flrl_rofliq_16O = mct_aVect_indexRA(l2x_r,'Flrl_rofliq_16O', perrWith='quiet' )
        index_l2x_Flrl_rofice_16O = mct_aVect_indexRA(l2x_r,'Flrl_rofice_16O', perrWith='quiet' )
        index_x2r_Flrl_rofliq_16O = mct_aVect_indexRA(x2r_r,'Flrl_rofliq_16O', perrWith='quiet' )
        index_x2r_Flrl_rofice_16O = mct_aVect_indexRA(x2r_r,'Flrl_rofice_16O', perrWith='quiet' )
        if ( index_l2x_Flrl_rofliq_16O /= 0 ) flds_wiso = .true.
-       index_l2x_Flrl_rofliq_18O = mct_aVect_indexRA(l2x_r,'Flrl_rofliq_18O', perrWith='quiet' )
-       index_l2x_Flrl_rofice_18O = mct_aVect_indexRA(l2x_r,'Flrl_rofice_18O', perrWith='quiet' )
-       index_x2r_Flrl_rofliq_18O = mct_aVect_indexRA(x2r_r,'Flrl_rofliq_18O', perrWith='quiet' )
-       index_x2r_Flrl_rofice_18O = mct_aVect_indexRA(x2r_r,'Flrl_rofice_18O', perrWith='quiet' )
-       if ( index_l2x_Flrl_rofliq_18O /= 0 ) flds_wiso = .true.
+
        index_l2x_Flrl_rofliq_HDO = mct_aVect_indexRA(l2x_r,'Flrl_rofliq_HDO', perrWith='quiet' )
        index_l2x_Flrl_rofice_HDO = mct_aVect_indexRA(l2x_r,'Flrl_rofice_HDO', perrWith='quiet' )
        index_x2r_Flrl_rofliq_HDO = mct_aVect_indexRA(x2r_r,'Flrl_rofliq_HDO', perrWith='quiet' )
        index_x2r_Flrl_rofice_HDO = mct_aVect_indexRA(x2r_r,'Flrl_rofice_HDO', perrWith='quiet' )
        if ( index_l2x_Flrl_rofliq_HDO /= 0 ) flds_wiso = .true.
+
+       index_l2x_Flrl_rofliq_18O = mct_aVect_indexRA(l2x_r,'Flrl_rofliq_18O', perrWith='quiet' )
+       index_l2x_Flrl_rofice_18O = mct_aVect_indexRA(l2x_r,'Flrl_rofice_18O', perrWith='quiet' )
+       index_x2r_Flrl_rofliq_18O = mct_aVect_indexRA(x2r_r,'Flrl_rofliq_18O', perrWith='quiet' )
+       index_x2r_Flrl_rofice_18O = mct_aVect_indexRA(x2r_r,'Flrl_rofice_18O', perrWith='quiet' )
+       if ( index_l2x_Flrl_rofliq_18O /= 0 ) flds_wiso = .true.
+
+       index_l2x_Flrl_rofliq_17O = mct_aVect_indexRA(l2x_r,'Flrl_rofliq_17O', perrWith='quiet' )
+       index_l2x_Flrl_rofice_17O = mct_aVect_indexRA(l2x_r,'Flrl_rofice_17O', perrWith='quiet' )
+       index_x2r_Flrl_rofliq_17O = mct_aVect_indexRA(x2r_r,'Flrl_rofliq_17O', perrWith='quiet' )
+       index_x2r_Flrl_rofice_17O = mct_aVect_indexRA(x2r_r,'Flrl_rofice_17O', perrWith='quiet' )
+       if ( index_l2x_Flrl_rofliq_17O /= 0 ) flds_wiso = .true.
+
+       index_l2x_Flrl_rofliq_HTO = mct_aVect_indexRA(l2x_r,'Flrl_rofliq_HTO', perrWith='quiet' )
+       index_l2x_Flrl_rofice_HTO = mct_aVect_indexRA(l2x_r,'Flrl_rofice_HTO', perrWith='quiet' )
+       index_x2r_Flrl_rofliq_HTO = mct_aVect_indexRA(x2r_r,'Flrl_rofliq_HTO', perrWith='quiet' )
+       index_x2r_Flrl_rofice_HTO = mct_aVect_indexRA(x2r_r,'Flrl_rofice_HTO', perrWith='quiet' )
+       if ( index_l2x_Flrl_rofliq_HTO /= 0 ) flds_wiso = .true.
+
        index_lfrac = mct_aVect_indexRA(fractions_r,"lfrac")
        first_time = .false.
     end if
@@ -463,10 +525,14 @@ contains
           lfrac = fractions_r%rAttr(index_lfrac,i)
           x2r_r%rAttr(index_x2r_Flrl_rofliq_16O,i) = l2x_r%rAttr(index_l2x_Flrl_rofliq_16O,i) * lfrac
           x2r_r%rAttr(index_x2r_Flrl_rofice_16O,i) = l2x_r%rAttr(index_l2x_Flrl_rofice_16O,i) * lfrac
-          x2r_r%rAttr(index_x2r_Flrl_rofliq_18O,i) = l2x_r%rAttr(index_l2x_Flrl_rofliq_18O,i) * lfrac
-          x2r_r%rAttr(index_x2r_Flrl_rofice_18O,i) = l2x_r%rAttr(index_l2x_Flrl_rofice_18O,i) * lfrac
           x2r_r%rAttr(index_x2r_Flrl_rofliq_HDO,i) = l2x_r%rAttr(index_l2x_Flrl_rofliq_HDO,i) * lfrac
           x2r_r%rAttr(index_x2r_Flrl_rofice_HDO,i) = l2x_r%rAttr(index_l2x_Flrl_rofice_HDO,i) * lfrac
+          x2r_r%rAttr(index_x2r_Flrl_rofliq_18O,i) = l2x_r%rAttr(index_l2x_Flrl_rofliq_18O,i) * lfrac
+          x2r_r%rAttr(index_x2r_Flrl_rofice_18O,i) = l2x_r%rAttr(index_l2x_Flrl_rofice_18O,i) * lfrac
+          x2r_r%rAttr(index_x2r_Flrl_rofliq_17O,i) = l2x_r%rAttr(index_l2x_Flrl_rofliq_17O,i) * lfrac
+          x2r_r%rAttr(index_x2r_Flrl_rofice_17O,i) = l2x_r%rAttr(index_l2x_Flrl_rofice_17O,i) * lfrac
+          x2r_r%rAttr(index_x2r_Flrl_rofliq_HTO,i) = l2x_r%rAttr(index_l2x_Flrl_rofliq_HTO,i) * lfrac
+          x2r_r%rAttr(index_x2r_Flrl_rofice_HTO,i) = l2x_r%rAttr(index_l2x_Flrl_rofice_HTO,i) * lfrac
        end do
     end if
 
@@ -553,13 +619,6 @@ contains
     integer, save :: index_x2o_Faxa_rain_16O
     integer, save :: index_x2o_Faxa_snow_16O
     integer, save :: index_x2o_Faxa_prec_16O
-    integer, save :: index_a2x_Faxa_rainc_18O
-    integer, save :: index_a2x_Faxa_rainl_18O
-    integer, save :: index_a2x_Faxa_snowc_18O
-    integer, save :: index_a2x_Faxa_snowl_18O
-    integer, save :: index_x2o_Faxa_rain_18O
-    integer, save :: index_x2o_Faxa_snow_18O
-    integer, save :: index_x2o_Faxa_prec_18O
     integer, save :: index_a2x_Faxa_rainc_HDO
     integer, save :: index_a2x_Faxa_rainl_HDO
     integer, save :: index_a2x_Faxa_snowc_HDO
@@ -567,6 +626,27 @@ contains
     integer, save :: index_x2o_Faxa_rain_HDO
     integer, save :: index_x2o_Faxa_snow_HDO
     integer, save :: index_x2o_Faxa_prec_HDO
+    integer, save :: index_a2x_Faxa_rainc_18O
+    integer, save :: index_a2x_Faxa_rainl_18O
+    integer, save :: index_a2x_Faxa_snowc_18O
+    integer, save :: index_a2x_Faxa_snowl_18O
+    integer, save :: index_x2o_Faxa_rain_18O
+    integer, save :: index_x2o_Faxa_snow_18O
+    integer, save :: index_x2o_Faxa_prec_18O
+    integer, save :: index_a2x_Faxa_rainc_17O
+    integer, save :: index_a2x_Faxa_rainl_17O
+    integer, save :: index_a2x_Faxa_snowc_17O
+    integer, save :: index_a2x_Faxa_snowl_17O
+    integer, save :: index_x2o_Faxa_rain_17O
+    integer, save :: index_x2o_Faxa_snow_17O
+    integer, save :: index_x2o_Faxa_prec_17O
+    integer, save :: index_a2x_Faxa_rainc_HTO
+    integer, save :: index_a2x_Faxa_rainl_HTO
+    integer, save :: index_a2x_Faxa_snowc_HTO
+    integer, save :: index_a2x_Faxa_snowl_HTO
+    integer, save :: index_x2o_Faxa_rain_HTO
+    integer, save :: index_x2o_Faxa_snow_HTO
+    integer, save :: index_x2o_Faxa_prec_HTO
 
     logical, save, pointer :: amerge(:),imerge(:),xmerge(:)
     integer, save, pointer :: aindx(:), iindx(:), xindx(:)
@@ -612,15 +692,6 @@ contains
        index_x2o_Faxa_snow_16O  = mct_aVect_indexRA(x2o_o,'Faxa_snow_16O' , perrWith='quiet')
        index_x2o_Faxa_prec_16O  = mct_aVect_indexRA(x2o_o,'Faxa_prec_16O' , perrWith='quiet')
        if ( index_x2o_Faxa_rain_16O /= 0 ) flds_wiso = .true.
-       ! H2_18O
-       index_a2x_Faxa_snowc_18O = mct_aVect_indexRA(a2x_o,'Faxa_snowc_18O', perrWith='quiet')
-       index_a2x_Faxa_snowl_18O = mct_aVect_indexRA(a2x_o,'Faxa_snowl_18O', perrWith='quiet')
-       index_a2x_Faxa_rainc_18O = mct_aVect_indexRA(a2x_o,'Faxa_rainc_18O', perrWith='quiet')
-       index_a2x_Faxa_rainl_18O = mct_aVect_indexRA(a2x_o,'Faxa_rainl_18O', perrWith='quiet')
-       index_x2o_Faxa_rain_18O  = mct_aVect_indexRA(x2o_o,'Faxa_rain_18O' , perrWith='quiet')
-       index_x2o_Faxa_snow_18O  = mct_aVect_indexRA(x2o_o,'Faxa_snow_18O' , perrWith='quiet')
-       index_x2o_Faxa_prec_18O  = mct_aVect_indexRA(x2o_o,'Faxa_prec_18O' , perrWith='quiet')
-       if ( index_x2o_Faxa_rain_18O /= 0 ) flds_wiso = .true.
        ! HDO
        index_a2x_Faxa_snowc_HDO = mct_aVect_indexRA(a2x_o,'Faxa_snowc_HDO', perrWith='quiet')
        index_a2x_Faxa_snowl_HDO = mct_aVect_indexRA(a2x_o,'Faxa_snowl_HDO', perrWith='quiet')
@@ -630,7 +701,33 @@ contains
        index_x2o_Faxa_snow_HDO  = mct_aVect_indexRA(x2o_o,'Faxa_snow_HDO' , perrWith='quiet')
        index_x2o_Faxa_prec_HDO  = mct_aVect_indexRA(x2o_o,'Faxa_prec_HDO' , perrWith='quiet')
        if ( index_x2o_Faxa_rain_HDO /= 0 ) flds_wiso = .true.
-
+       ! H2_18O
+       index_a2x_Faxa_snowc_18O = mct_aVect_indexRA(a2x_o,'Faxa_snowc_18O', perrWith='quiet')
+       index_a2x_Faxa_snowl_18O = mct_aVect_indexRA(a2x_o,'Faxa_snowl_18O', perrWith='quiet')
+       index_a2x_Faxa_rainc_18O = mct_aVect_indexRA(a2x_o,'Faxa_rainc_18O', perrWith='quiet')
+       index_a2x_Faxa_rainl_18O = mct_aVect_indexRA(a2x_o,'Faxa_rainl_18O', perrWith='quiet')
+       index_x2o_Faxa_rain_18O  = mct_aVect_indexRA(x2o_o,'Faxa_rain_18O' , perrWith='quiet')
+       index_x2o_Faxa_snow_18O  = mct_aVect_indexRA(x2o_o,'Faxa_snow_18O' , perrWith='quiet')
+       index_x2o_Faxa_prec_18O  = mct_aVect_indexRA(x2o_o,'Faxa_prec_18O' , perrWith='quiet')
+       if ( index_x2o_Faxa_rain_18O /= 0 ) flds_wiso = .true.
+       ! H2_17O
+       index_a2x_Faxa_snowc_17O = mct_aVect_indexRA(a2x_o,'Faxa_snowc_17O', perrWith='quiet')
+       index_a2x_Faxa_snowl_17O = mct_aVect_indexRA(a2x_o,'Faxa_snowl_17O', perrWith='quiet')
+       index_a2x_Faxa_rainc_17O = mct_aVect_indexRA(a2x_o,'Faxa_rainc_17O', perrWith='quiet')
+       index_a2x_Faxa_rainl_17O = mct_aVect_indexRA(a2x_o,'Faxa_rainl_17O', perrWith='quiet')
+       index_x2o_Faxa_rain_17O  = mct_aVect_indexRA(x2o_o,'Faxa_rain_17O' , perrWith='quiet')
+       index_x2o_Faxa_snow_17O  = mct_aVect_indexRA(x2o_o,'Faxa_snow_17O' , perrWith='quiet')
+       index_x2o_Faxa_prec_17O  = mct_aVect_indexRA(x2o_o,'Faxa_prec_17O' , perrWith='quiet')
+       if ( index_x2o_Faxa_rain_17O /= 0 ) flds_wiso = .true.
+       ! HTO
+       index_a2x_Faxa_snowc_HTO = mct_aVect_indexRA(a2x_o,'Faxa_snowc_HTO', perrWith='quiet')
+       index_a2x_Faxa_snowl_HTO = mct_aVect_indexRA(a2x_o,'Faxa_snowl_HTO', perrWith='quiet')
+       index_a2x_Faxa_rainc_HTO = mct_aVect_indexRA(a2x_o,'Faxa_rainc_HTO', perrWith='quiet')
+       index_a2x_Faxa_rainl_HTO = mct_aVect_indexRA(a2x_o,'Faxa_rainl_HTO', perrWith='quiet')
+       index_x2o_Faxa_rain_HTO  = mct_aVect_indexRA(x2o_o,'Faxa_rain_HTO' , perrWith='quiet')
+       index_x2o_Faxa_snow_HTO  = mct_aVect_indexRA(x2o_o,'Faxa_snow_HTO' , perrWith='quiet')
+       index_x2o_Faxa_prec_HTO  = mct_aVect_indexRA(x2o_o,'Faxa_prec_HTO' , perrWith='quiet')
+       if ( index_x2o_Faxa_rain_HTO /= 0 ) flds_wiso = .true.
 
 
        ! Compute all other quantities based on standardized naming convention (see below)
@@ -672,12 +769,18 @@ contains
           if (trim(field_ocn) == 'Faxa_snow_16O' .or. &
                trim(field_ocn) == 'Faxa_rain_16O' .or. &
                trim(field_ocn) == 'Faxa_prec_16O' .or. &
+               trim(field_ocn) == 'Faxa_snow_HDO' .or. &
+               trim(field_ocn) == 'Faxa_rain_HDO' .or. &
+               trim(field_ocn) == 'Faxa_prec_HDO' .or. &
                trim(field_ocn) == 'Faxa_snow_18O' .or. &
                trim(field_ocn) == 'Faxa_rain_18O' .or. &
                trim(field_ocn) == 'Faxa_prec_18O' .or. &
-               trim(field_ocn) == 'Faxa_snow_HDO' .or. &
-               trim(field_ocn) == 'Faxa_rain_HDO' .or. &
-               trim(field_ocn) == 'Faxa_prec_HDO') then
+               trim(field_ocn) == 'Faxa_snow_17O' .or. &
+               trim(field_ocn) == 'Faxa_rain_17O' .or. &
+               trim(field_ocn) == 'Faxa_prec_17O' .or. &
+               trim(field_ocn) == 'Faxa_snow_HTO' .or. &
+               trim(field_ocn) == 'Faxa_rain_HTO' .or. &
+               trim(field_ocn) == 'Faxa_prec_HTO') then
              cycle ! ignore iso snow, rain, prec - treated explicitly above
           end if
           if (trim(field_ocn(1:5)) == 'Forr_') then
@@ -800,28 +903,44 @@ contains
                a2x_o%rAttr(index_a2x_Faxa_snowl_16O,n) * afrac
           x2o_o%rAttr(index_x2o_Faxa_rain_16O ,n) = a2x_o%rAttr(index_a2x_Faxa_rainc_16O,n) * afrac + &
                a2x_o%rAttr(index_a2x_Faxa_rainl_16O,n) * afrac
-          x2o_o%rAttr(index_x2o_Faxa_snow_18O ,n) = a2x_o%rAttr(index_a2x_Faxa_snowc_18O,n) * afrac + &
-               a2x_o%rAttr(index_a2x_Faxa_snowl_18O,n) * afrac
-          x2o_o%rAttr(index_x2o_Faxa_rain_18O ,n) = a2x_o%rAttr(index_a2x_Faxa_rainc_18O,n) * afrac + &
-               a2x_o%rAttr(index_a2x_Faxa_rainl_18O,n) * afrac
           x2o_o%rAttr(index_x2o_Faxa_snow_HDO ,n) = a2x_o%rAttr(index_a2x_Faxa_snowc_HDO,n) * afrac + &
                a2x_o%rAttr(index_a2x_Faxa_snowl_HDO,n) * afrac
           x2o_o%rAttr(index_x2o_Faxa_rain_HDO ,n) = a2x_o%rAttr(index_a2x_Faxa_rainc_HDO,n) * afrac + &
                a2x_o%rAttr(index_a2x_Faxa_rainl_HDO,n) * afrac
+          x2o_o%rAttr(index_x2o_Faxa_snow_18O ,n) = a2x_o%rAttr(index_a2x_Faxa_snowc_18O,n) * afrac + &
+               a2x_o%rAttr(index_a2x_Faxa_snowl_18O,n) * afrac
+          x2o_o%rAttr(index_x2o_Faxa_rain_18O ,n) = a2x_o%rAttr(index_a2x_Faxa_rainc_18O,n) * afrac + &
+               a2x_o%rAttr(index_a2x_Faxa_rainl_18O,n) * afrac
+          x2o_o%rAttr(index_x2o_Faxa_snow_17O ,n) = a2x_o%rAttr(index_a2x_Faxa_snowc_17O,n) * afrac + &
+               a2x_o%rAttr(index_a2x_Faxa_snowl_17O,n) * afrac
+          x2o_o%rAttr(index_x2o_Faxa_rain_17O ,n) = a2x_o%rAttr(index_a2x_Faxa_rainc_17O,n) * afrac + &
+               a2x_o%rAttr(index_a2x_Faxa_rainl_17O,n) * afrac
+          x2o_o%rAttr(index_x2o_Faxa_snow_HTO ,n) = a2x_o%rAttr(index_a2x_Faxa_snowc_HTO,n) * afrac + &
+               a2x_o%rAttr(index_a2x_Faxa_snowl_HTO,n) * afrac
+          x2o_o%rAttr(index_x2o_Faxa_rain_HTO ,n) = a2x_o%rAttr(index_a2x_Faxa_rainc_HTO,n) * afrac + &
+               a2x_o%rAttr(index_a2x_Faxa_rainl_HTO,n) * afrac
 
           x2o_o%rAttr(index_x2o_Faxa_snow_16O ,n) = x2o_o%rAttr(index_x2o_Faxa_snow_16O ,n) * flux_epbalfact
           x2o_o%rAttr(index_x2o_Faxa_rain_16O ,n) = x2o_o%rAttr(index_x2o_Faxa_rain_16O ,n) * flux_epbalfact
-          x2o_o%rAttr(index_x2o_Faxa_snow_18O ,n) = x2o_o%rAttr(index_x2o_Faxa_snow_18O ,n) * flux_epbalfact
-          x2o_o%rAttr(index_x2o_Faxa_rain_18O ,n) = x2o_o%rAttr(index_x2o_Faxa_rain_18O ,n) * flux_epbalfact
           x2o_o%rAttr(index_x2o_Faxa_snow_HDO ,n) = x2o_o%rAttr(index_x2o_Faxa_snow_HDO ,n) * flux_epbalfact
           x2o_o%rAttr(index_x2o_Faxa_rain_HDO ,n) = x2o_o%rAttr(index_x2o_Faxa_rain_HDO ,n) * flux_epbalfact
+          x2o_o%rAttr(index_x2o_Faxa_snow_18O ,n) = x2o_o%rAttr(index_x2o_Faxa_snow_18O ,n) * flux_epbalfact
+          x2o_o%rAttr(index_x2o_Faxa_rain_18O ,n) = x2o_o%rAttr(index_x2o_Faxa_rain_18O ,n) * flux_epbalfact
+          x2o_o%rAttr(index_x2o_Faxa_snow_17O ,n) = x2o_o%rAttr(index_x2o_Faxa_snow_17O ,n) * flux_epbalfact
+          x2o_o%rAttr(index_x2o_Faxa_rain_17O ,n) = x2o_o%rAttr(index_x2o_Faxa_rain_17O ,n) * flux_epbalfact
+          x2o_o%rAttr(index_x2o_Faxa_snow_HTO ,n) = x2o_o%rAttr(index_x2o_Faxa_snow_HTO ,n) * flux_epbalfact
+          x2o_o%rAttr(index_x2o_Faxa_rain_HTO ,n) = x2o_o%rAttr(index_x2o_Faxa_rain_HTO ,n) * flux_epbalfact
 
           x2o_o%rAttr(index_x2o_Faxa_prec_16O ,n) = x2o_o%rAttr(index_x2o_Faxa_rain_16O ,n) + &
                x2o_o%rAttr(index_x2o_Faxa_snow_16O ,n)
-          x2o_o%rAttr(index_x2o_Faxa_prec_18O ,n) = x2o_o%rAttr(index_x2o_Faxa_rain_18O ,n) + &
-               x2o_o%rAttr(index_x2o_Faxa_snow_18O ,n)
           x2o_o%rAttr(index_x2o_Faxa_prec_HDO ,n) = x2o_o%rAttr(index_x2o_Faxa_rain_HDO ,n) + &
                x2o_o%rAttr(index_x2o_Faxa_snow_HDO ,n)
+          x2o_o%rAttr(index_x2o_Faxa_prec_18O ,n) = x2o_o%rAttr(index_x2o_Faxa_rain_18O ,n) + &
+               x2o_o%rAttr(index_x2o_Faxa_snow_18O ,n)
+          x2o_o%rAttr(index_x2o_Faxa_prec_17O ,n) = x2o_o%rAttr(index_x2o_Faxa_rain_17O ,n) + &
+               x2o_o%rAttr(index_x2o_Faxa_snow_17O ,n)
+          x2o_o%rAttr(index_x2o_Faxa_prec_HTO ,n) = x2o_o%rAttr(index_x2o_Faxa_rain_HTO ,n) + &
+               x2o_o%rAttr(index_x2o_Faxa_snow_HTO ,n)
        end if
 
     end do
