@@ -84,7 +84,7 @@ module water_isotopes
   integer , parameter, public :: pwtspec = 6    ! number of water species (h2o,hdo,h218o,h216o, h217o, hto)
 
 ! Tunable prameters for fractionation scheme
-  real(r8), parameter :: dkfac    = 0.58_r8           ! diffusive evap. kinetic power law
+  real(r8), parameter, public :: dkfac    = 0.58_r8    ! diffusive evap. kinetic power law (Stewart, 1975?)
 !  real(r8), parameter :: tkini    = SHR_CONST_TKTRIP  ! min temp. for kinetic effects as ice appears
 !  real(r8), parameter :: tkini    = 258.15_r8         !From Bony et. al., 2008
   real(r8), parameter :: tkini    = 253.15_r8         !From Jouzel and Merlivat, 1984
@@ -125,7 +125,7 @@ module water_isotopes
   ! TBD: Ideally this should be controlled by something like a namelist parameter,
   ! but it needs to be something that can be made consistent between models.
   ! NOTE:  HT16O values pulled from GISS ModelE2.1 source code.
-  real(r8), dimension(pwtspec), parameter :: &  ! diffusivity ratio (note D/H, not HDO/H2O)
+  real(r8), dimension(pwtspec), parameter, public :: &  ! diffusivity ratio (note D/H, not HDO/H2O)
 !      difrm = (/ 1._r8, 1._r8, 1._r8, 1._r8, 1._r8, 1._r8 /)                 ! No kinetic fractination
       difrm = (/ 1._r8, 1._r8, 0.9757_r8, 0.9727_r8, 0.9856_r8, 0.9679_r8/) ! Merlivat 1978 (direct from paper)
 !      difrm = (/ 1._r8, 1._r8, 0.9757_r8, 0.9727_r8, 0.9858_r8, 0.9679_r8 /) ! Merlivat 1978 + Schoenemann et. al., 2014
