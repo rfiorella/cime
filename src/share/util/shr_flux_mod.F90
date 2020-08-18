@@ -618,7 +618,7 @@ END subroutine shr_flux_atmOcn
 
 SUBROUTINE shr_flux_atmOcn_UA(   &
            &               nMax  ,zbot  ,ubot  ,vbot  ,thbot ,  &
-           &               qbot  ,s16O  ,sHDO  ,s18O  ,s17O  ,HTO ,&
+           &               qbot  ,s16O  ,sHDO  ,s18O  ,s17O  ,sHTO ,&
            &               rbot  ,   & 
            &               tbot  , pslv ,us    , vs   ,   &
            &               ts    ,mask  ,sen   ,lat   ,lwup  ,   &
@@ -648,6 +648,9 @@ SUBROUTINE shr_flux_atmOcn_UA(   &
    real(R8)   ,intent(in) :: s16O (nMax) ! atm H216O tracer conc. (kg/kg)
    real(R8)   ,intent(in) :: sHDO (nMax) ! atm HDO tracer conc.  (kg/kg)
    real(R8)   ,intent(in) :: s18O (nMax) ! atm H218O tracer conc. (kg/kg)
+   real(R8)   ,intent(in) :: s17O (nMax) ! atm H217O tracer conc. (kg/kg)
+   real(r8)   ,intent(in) :: sHTO (nMax) ! atm HTO tracer conc. (kg/kg)
+
    real(R8)   ,intent(in) :: r16O (nMax) ! ocn H216O tracer ratio/Rstd
    real(R8)   ,intent(in) :: rHDO (nMax) ! ocn HD16O tracer ratio/Rstd
    real(R8)   ,intent(in) :: r18O (nMax) ! ocn H218O tracer ratio/Rstd
@@ -965,7 +968,7 @@ SUBROUTINE shr_flux_atmOcn_UA(   &
                          qbot(n),evap(n))
         call wiso_flxoce(5,rbot(n),zbot(n),s17O(n),ts(n),r17O(n),ustar,re,ssq, evap_17O(n), &
                          qbot(n),evap(n))
-        call wiso_flxoce(6,rbot(n),zbot(n),s17O(n),ts(n),r17O(n),ustar,re,ssq, evap_17O(n), &
+        call wiso_flxoce(6,rbot(n),zbot(n),sHTO(n),ts(n),rHTO(n),ustar,re,ssq, evap_HTO(n), &
                          qbot(n),evap(n))
 
         !------------------------------------------------------------
@@ -1218,6 +1221,7 @@ SUBROUTINE shr_flux_atmOcn_diurnal &
    real(R8)   ,intent(in) :: sHDO (nMax) ! atm HDO tracer conc.  (kg/kg)
    real(R8)   ,intent(in) :: s18O (nMax) ! atm H218O tracer conc. (kg/kg)
    real(R8)   ,intent(in) :: s17O (nMax) ! atm H218O tracer conc. (kg/kg)
+   real(R8)   ,intent(in) :: sHTO (nMax) ! atm HTO tracer conc. (kg/kg)
    real(R8)   ,intent(in) :: r16O (nMax) ! ocn H216O tracer ratio/Rstd
    real(R8)   ,intent(in) :: rHDO (nMax) ! ocn HD16O tracer ratio/Rstd
    real(R8)   ,intent(in) :: r18O (nMax) ! ocn H218O tracer ratio/Rstd

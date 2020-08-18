@@ -167,6 +167,7 @@ module seq_flux_mct
   integer :: index_xao_Faox_evap_16O
   integer :: index_xao_Faox_evap_HDO
   integer :: index_xao_Faox_evap_18O
+  integer :: index_xao_Faox_evap_17O
   integer :: index_xao_Faox_evap_HTO
   integer :: index_xao_Faox_lwup
   integer :: index_xao_Faox_swdn
@@ -1148,7 +1149,7 @@ contains
             dens , tbot, pslv, &
             uocn, vocn , tocn , emask, sen , lat , lwup , &
             roce_16O, roce_HDO, roce_18O, roce_17O, roce_HTO,  &
-            evap , evap_16O, evap_HDO, evap_18O, evap_17O, evapo_HTO, &
+            evap , evap_16O, evap_HDO, evap_18O, evap_17O, evap_HTO, &
             taux, tauy, tref, qref , &
             duu10n,ustar, re  , ssq , missval = 0.0_r8 )
     else

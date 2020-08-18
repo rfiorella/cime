@@ -81,7 +81,7 @@ module water_isotopes
   integer, parameter, public  :: isphto   = 6    ! HTO
 
 ! Module parameters
-  integer , parameter, public :: pwtspec = 6    ! number of water species (h2o,hdo,h218o,h216o, h217o, hto)
+  integer , parameter, public :: pwtspec = 6     ! number of water species (h2o,hdo,h218o,h216o,h217o,hto)
 
 ! Tunable prameters for fractionation scheme
   real(r8), parameter, public :: dkfac    = 0.58_r8    ! diffusive evap. kinetic power law (Stewart, 1975?)
@@ -124,11 +124,11 @@ module water_isotopes
 
   ! TBD: Ideally this should be controlled by something like a namelist parameter,
   ! but it needs to be something that can be made consistent between models.
-  ! NOTE:  HT16O values pulled from GISS ModelE2.1 source code.
+  ! NOTE:  HT16O values pulled from GISS ModelE2.1 and isoCAM3
   real(r8), dimension(pwtspec), parameter, public :: &  ! diffusivity ratio (note D/H, not HDO/H2O)
 !      difrm = (/ 1._r8, 1._r8, 1._r8, 1._r8, 1._r8, 1._r8 /)                 ! No kinetic fractination
-      difrm = (/ 1._r8, 1._r8, 0.9757_r8, 0.9727_r8, 0.9856_r8, 0.9679_r8/) ! Merlivat 1978 (direct from paper)
-!      difrm = (/ 1._r8, 1._r8, 0.9757_r8, 0.9727_r8, 0.9858_r8, 0.9679_r8 /) ! Merlivat 1978 + Schoenemann et. al., 2014
+!      difrm = (/ 1._r8, 1._r8, 0.9757_r8, 0.9727_r8, 0.9856_r8, 0.9679_r8/) ! Merlivat 1978 (direct from paper)
+      difrm = (/ 1._r8, 1._r8, 0.9757_r8, 0.9727_r8, 0.9858_r8, 0.9679_r8 /) ! Merlivat 1978 + Schoenemann et. al., 2014
 !      difrm = (/ 1._r8, 1._r8, 0.9839_r8, 0.9691_r8, 0.9856_r8, 0.9679_r8 /) ! Cappa et. al., 2003 + Merlivat 1978
 
 ! Prescribed isotopic ratios (largely arbitrary and tunable)
@@ -148,9 +148,9 @@ module water_isotopes
 ! Ocean surface kinetic fractionation parameters for M&J method:
 ! TBD: Check to make sure that the entries for h216o are correct.
   real(r8), parameter, dimension(pwtspec) :: &  ! surface kinetic exchange
-      aksmc = (/ 0._r8, 0._r8, 0.00528_r8,   0.006_r8    /), &
-      akrfa = (/ 0._r8, 0._r8, 0.2508e-3_r8, 0.285e-3_r8 /), &
-      akrfb = (/ 0._r8, 0._r8, 0.7216e-3_r8, 0.82e-3_r8  /)
+      aksmc = (/ 0._r8, 0._r8, 0.00528_r8,   0.006_r8, 0.00314_r8, 0.01056_r8 /), &
+      akrfa = (/ 0._r8, 0._r8, 0.2508e-3_r8, 0.285e-3_r8, 0.1495e-3_r8, 0.5016e-3_r8 /), &
+      akrfb = (/ 0._r8, 0._r8, 0.7216e-3_r8, 0.82e-3_r8, 0.430e-3_r8, 1.4432e-3_r8 /)
 
 ! Coefficients for fractionation
 ! TBD: Check to make sure that the entries for h216o are correct.
@@ -161,13 +161,14 @@ module water_isotopes
 !      alpcl = (/ 0._r8, 0._r8, 52.612e-3_r8, -2.0667e-3_r8 /)
 
 ! From Horita and Wesolowski, 1994:
-! NOTE:  HT16O values pulled from GISS ModelE2.1 source code.
+! NOTE:  H217O is modified later, so keep values here the same as H218O.
+! NOTE:  HT16O is modified later, so keep values here the same as HD16O.
   real(r8), parameter, dimension(pwtspec) :: &  ! liquid/vapour
-      alpal = (/ 0._r8, 0._r8, 1158.8e-12_r8, 0.35041e+6_r8, 0.35041e+6_r8, 0._r8 /), &
-      alpbl = (/ 0._r8, 0._r8, -1620.1e-9_r8, -1.6664e+3_r8, -1.6664e+3_r8, -4.648e+4_r8 /), &
-      alpcl = (/ 0._r8, 0._r8, 794.84e-6_r8,  6.7123_r8,     6.7123_r8,     103.87_r8 /), &
-      alpdl = (/ 0._r8, 0._r8, -161.04e-3_r8, -7.685e-3_r8, -7.685e-3_r8,   0._r8 /), &
-      alpel = (/ 0._r8, 0._r8, 2.9992e+6_r8,  0._r8,        0._r8,          0._r8 /)
+      alpal = (/ 0._r8, 0._r8, 1158.8e-12_r8, 0.35041e+6_r8, 0.35041e+6_r8, 1158.8e-12_r8 /), &
+      alpbl = (/ 0._r8, 0._r8, -1620.1e-9_r8, -1.6664e+3_r8, -1.6664e+3_r8, -1620.1e-9_r8 /), &
+      alpcl = (/ 0._r8, 0._r8, 794.84e-6_r8,  6.7123_r8,     6.7123_r8,     794.84e-6_r8 /), &
+      alpdl = (/ 0._r8, 0._r8, -161.04e-3_r8, -7.685e-3_r8, -7.685e-3_r8,   -161.04e-3_r8 /), &
+      alpel = (/ 0._r8, 0._r8, 2.9992e+6_r8,  0._r8,        0._r8,          2.9992e+6_r8 /)
 
 !isoCAM3 values:
 !  real(r8), parameter, dimension(pwtspec) :: &  ! ice/vapour
@@ -175,19 +176,13 @@ module water_isotopes
 !      alpbi = (/ 0._r8, 0._r8, 0._r8,       11.839_r8     /), &
 !      alpci = (/ 0._r8, 0._r8, -9.34e-2_r8, -28.224e-3_r8 /)
 
-! From Merlivat & Nief,1967 for HDO, and Majoube, 1971b for H218O:
-  real(r8), parameter, dimension(pwtspec) :: &  ! ice/vapour
-      alpai = (/ 0._r8, 0._r8, 16289._r8,   0._r8         /), &
-      alpbi = (/ 0._r8, 0._r8, 0._r8,       11.839_r8     /), &
-      alpci = (/ 0._r8, 0._r8, -9.45e-2_r8, -28.224e-3_r8 /)
-
 ! From Merlivat & Nief,1967 for HDO, and Majoube, 1971b for H218O/H217O:
-! NOTE:  HT16O values pulled from GISS ModelE2.1 source code, which
-!        is apparently the same as the vapor/liquid values.
+! NOTE:  H217O is modified later, so keep values here the same as H218O.
+! NOTE:  HT16O is modified later, so keep values here the same as HD16O.
   real(r8), parameter, dimension(pwtspec) :: &  ! ice/vapour
-      alpai = (/ 0._r8, 0._r8, 16289._r8,   0._r8,         0._r8,         -4648e+4_r8 /), &
-      alpbi = (/ 0._r8, 0._r8, 0._r8,       11.839_r8,     11.839_r8,     103.87_r8 /), &
-      alpci = (/ 0._r8, 0._r8, -9.45e-2_r8, -28.224e-3_r8, -28.224e-3_r8, 0._r8 /)
+      alpai = (/ 0._r8, 0._r8, 16289._r8,   0._r8,         0._r8,         16289._r8 /), &
+      alpbi = (/ 0._r8, 0._r8, 0._r8,       11.839_r8,     11.839_r8,     0._r8 /), &
+      alpci = (/ 0._r8, 0._r8, -9.45e-2_r8, -28.224e-3_r8, -28.224e-3_r8, -9.45e-2_r8 /)
 
 ! Half-life of HTO (4500 days):
 ! reference doi: 10.6028/jres.105.043
@@ -362,7 +357,7 @@ contains
 !    wiso_alpl = exp(alpal(isp)/tk**2 + alpbl(isp)/tk + alpcl(isp))
 
 !Horita and Wesolowski, 1994:
-    if(isp == isphdo) then !HDO has different formulation:
+    if(isp == isphdo .or. isp == isphto) then !HDO and HTO have different formulations:
       wiso_alpl = exp(alpal(isp)*tk**3 + alpbl(isp)*tk**2 + alpcl(isp)*tk + alpdl(isp) + alpel(isp)/tk**3)
     else
       wiso_alpl = exp(alpal(isp)/tk**3 + alpbl(isp)/tk**2 + alpcl(isp)/tk + alpdl(isp))
@@ -371,6 +366,11 @@ contains
     !Apply H217O fractionation factor adjustment:
     if(isp == isph217o) then
       wiso_alpl = wiso_alpl**0.529_r8 !From Schoenemann et. al., 2014
+    end if
+
+    !Apply HT16O fractionation factor adjustment:
+    if(isp == isphto) then
+      wiso_alpl = wiso_alpl**2.0_r8 !From IsoCAM3
     end if
 
 #ifdef NOFRAC
@@ -400,6 +400,11 @@ contains
     !Apply H217O fractionation factor adjustment:
     if(isp == isph217o) then
       wiso_alpi = wiso_alpi**0.529_r8 !From Schoenemann et. al., 2014
+    end if
+
+    !Apply HT16O fractionation factor adjustment:
+    if(isp == isphto) then
+      wiso_alpi = wiso_alpi**2.0_r8 !From IsoCAM3
     end if
 
 #ifdef NOFRAC

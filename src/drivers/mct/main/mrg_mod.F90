@@ -467,6 +467,10 @@ contains
     integer, save :: index_l2x_Flrl_rofice_17O
     integer, save :: index_x2r_Flrl_rofliq_17O
     integer, save :: index_x2r_Flrl_rofice_17O
+    integer, save :: index_l2x_Flrl_rofliq_HTO
+    integer, save :: index_l2x_Flrl_rofice_HTO
+    integer, save :: index_x2r_Flrl_rofliq_HTO
+    integer, save :: index_x2r_Flrl_rofice_HTO
     integer, save :: index_lfrac
     logical, save :: first_time = .true.
     logical, save :: flds_wiso  = .false.
