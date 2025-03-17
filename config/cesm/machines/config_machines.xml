@@ -1002,6 +1002,8 @@ This allows using a different mpirun command to launch unit tests
     </module_system>
 
     <environment_variables>
+      <env name="NETCDF_FORTRAN_PATH">/glade/u/apps/derecho/23.09/spack/opt/spack/netcdf/4.9.2/packages/netcdf-fortran/4.6.1/oneapi/2023.2.1/vfpj</env>
+      <env name="NETCDF_C_PATH">/glade/u/apps/derecho/23.09/spack/opt/spack/netcdf/4.9.2/packages/netcdf-c/4.9.2/oneapi/2023.2.1/cnx4</env>
       <env name="OMP_STACKSIZE">64M</env>
       <env name="FI_CXI_RX_MATCH_MODE">hybrid</env>
       <env name="FI_MR_CACHE_MONITOR">memhooks</env>
