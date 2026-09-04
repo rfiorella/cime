@@ -9,20 +9,25 @@
 #
 # NOTE: BuildKit is required (the cache mounts below). Build with:
 #   DOCKER_BUILDKIT=1 docker build -f docker/Dockerfile -t cime .
+# For multiarch builds:
+#   docker buildx build --platform linux/amd64,linux/arm64 -f docker/Dockerfile -t cime .
 
-ARG UBUNTU_DIGEST=sha256:561618e2c15bf2397621dd04f96926663a3b5616c189cf7e38db7e82f5c538ea
 ARG PIXI_VERSION=0.73.0
-ARG PIXI_SHA256=682564e7cd35d38307df3cd6c8e9a45a1437d20febac0c8d165809d7c38408d1
+ARG PIXI_SHA256_AMD64=682564e7cd35d38307df3cd6c8e9a45a1437d20febac0c8d165809d7c38408d1
+ARG PIXI_SHA256_ARM64=0788f47eb37e0706de209c3ce81cc804ee128f7dd4ec09a686754a67170ddb64
 ARG UV_VERSION=0.12.3
-ARG UV_SHA256=600cf9a742aca00d292673b16b5acffaa7b8c269a364ad0c2e79498dcb1fe101
+ARG UV_SHA256_AMD64=600cf9a742aca00d292673b16b5acffaa7b8c269a364ad0c2e79498dcb1fe101
+ARG UV_SHA256_ARM64=bb66cb52e7b1823aed1183630d8d8e5c958840d584a4c55ec10a4cfc168dcca2
 
 ########################################################################
 # Base image with the pixi environments installed at their final path. #
 ########################################################################
-FROM ubuntu:24.04@${UBUNTU_DIGEST} AS base
+FROM ubuntu:24.04 AS base
 
+ARG TARGETARCH
 ARG PIXI_VERSION
-ARG PIXI_SHA256
+ARG PIXI_SHA256_AMD64
+ARG PIXI_SHA256_ARM64
 
 # entrypoint.sh is bash (uses `source`, `[[ ]]`); ubuntu defaults sh->dash.
 SHELL ["/bin/bash", "-c"]
@@ -40,7 +45,23 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 
 # Install a pinned pixi release (verified against a known checksum).
-RUN curl -LsSf "https://github.com/prefix-dev/pixi/releases/download/v${PIXI_VERSION}/pixi-x86_64-unknown-linux-musl.tar.gz" \
+# Architecture mapping: amd64->x86_64, arm64->aarch64
+RUN set -e; \
+    case "${TARGETARCH}" in \
+      amd64) \
+        PIXI_ARCH="x86_64-unknown-linux-musl"; \
+        PIXI_SHA256="${PIXI_SHA256_AMD64}"; \
+        ;; \
+      arm64) \
+        PIXI_ARCH="aarch64-unknown-linux-musl"; \
+        PIXI_SHA256="${PIXI_SHA256_ARM64}"; \
+        ;; \
+      *) \
+        echo "Unsupported architecture: ${TARGETARCH}"; \
+        exit 1; \
+        ;; \
+    esac; \
+    curl -LsSf "https://github.com/prefix-dev/pixi/releases/download/v${PIXI_VERSION}/pixi-${PIXI_ARCH}.tar.gz" \
       -o /tmp/pixi.tar.gz \
   && echo "${PIXI_SHA256}  /tmp/pixi.tar.gz" | sha256sum -c - \
   && tar -xzf /tmp/pixi.tar.gz -C /usr/local/bin pixi \
@@ -81,8 +102,10 @@ RUN SKIP_ENTRYPOINT=true source /entrypoint.sh \
 ################################
 FROM base AS main
 
+ARG TARGETARCH
 ARG UV_VERSION
-ARG UV_SHA256
+ARG UV_SHA256_AMD64
+ARG UV_SHA256_ARM64
 
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
@@ -95,7 +118,23 @@ COPY test-requirements.txt /requirements.txt
 
 # Install a pinned uv release (verified against a known checksum), then use it
 # to provide the Python test environment (pytest, etc.).
-RUN curl -LsSf "https://github.com/astral-sh/uv/releases/download/${UV_VERSION}/uv-x86_64-unknown-linux-gnu.tar.gz" \
+# Architecture mapping: amd64->x86_64, arm64->aarch64
+RUN set -e; \
+    case "${TARGETARCH}" in \
+      amd64) \
+        UV_ARCH="x86_64-unknown-linux-gnu"; \
+        UV_SHA256="${UV_SHA256_AMD64}"; \
+        ;; \
+      arm64) \
+        UV_ARCH="aarch64-unknown-linux-gnu"; \
+        UV_SHA256="${UV_SHA256_ARM64}"; \
+        ;; \
+      *) \
+        echo "Unsupported architecture: ${TARGETARCH}"; \
+        exit 1; \
+        ;; \
+    esac; \
+    curl -LsSf "https://github.com/astral-sh/uv/releases/download/${UV_VERSION}/uv-${UV_ARCH}.tar.gz" \
       -o /tmp/uv.tar.gz \
   && echo "${UV_SHA256}  /tmp/uv.tar.gz" | sha256sum -c - \
   && tar -xzf /tmp/uv.tar.gz -C /usr/local/bin --strip-components=1 \
