@@ -2,7 +2,14 @@
 name = "cime-docker"
 description = "CIME CI container dependencies (E3SM and CESM) built from conda-forge"
 channels = ["conda-forge"]
-platforms = ["linux-64"]
+
+# Both subdirs are locked so the container image can be built for linux/amd64
+# and linux/arm64 (the Dockerfile picks the pixi/uv binary from TARGETARCH).
+# Each platform is solved independently, so package versions may differ between
+# the two; the solve-group below only guarantees consistency across the e3sm and
+# cesm environments *within* a platform, which is what the shared I/O stack
+# requires. Regenerate with `pixi lock` after editing any dependency.
+platforms = ["linux-64", "linux-aarch64"]
 
 # Shared build/runtime toolchain and I/O libraries used by both models.
 # Everything is pinned to the mpich MPI variant so a single, consistent
@@ -28,6 +35,18 @@ hdf5 = { version = "*", build = "mpi_mpich_*" }
 libnetcdf = { version = "*", build = "mpi_mpich_*" }
 netcdf-fortran = { version = "*", build = "mpi_mpich_*" }
 libpnetcdf = { version = "*", build = "mpi_mpich_*" }
+
+# aarch64-only pin. gfortran can only read `.mod` files written by a compiler
+# with the same module format, and GCC 15 bumped that format. conda-forge's
+# linux-aarch64 mpich 5.0.1 build `_4` was compiled with gfortran 15 (it
+# declares `libgfortran5 >=15.3.0`), so `use mpi` fails against the gfortran
+# 13.4 pinned above with "Cannot read module file ... created by a different
+# version of GNU Fortran". The linux-64 build `_2` declares `>=14.3.0` and GCC
+# 13/14 share a module format, so amd64 is unaffected and is deliberately left
+# unconstrained here to keep its solve byte-identical. Capping libgfortran5
+# below 15 moves aarch64 to mpich `_3`, which is module-compatible.
+[target.linux-aarch64.dependencies]
+libgfortran5 = "<15"
 
 # E3SM uses MOAB (with tempest-remap) for online regridding.
 [feature.e3sm.dependencies]

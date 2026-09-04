@@ -4,9 +4,16 @@ This container provides a reproducible environment for building and testing
 CIME with either E3SM or CESM. It mirrors the environment used by the GitHub
 Actions CI matrix.
 
-**Platform support:** Linux amd64 only. The image uses x86-64 binaries (pixi, uv)
-and `linux-64` conda-forge packages. It is designed to run as root with storage
-under `/root/storage`.
+**Platform support:** Linux amd64 and arm64. The pixi and uv binaries are
+selected from `TARGETARCH`, and `pixi.toml` locks both the `linux-64` and
+`linux-aarch64` conda-forge subdirs, so `--platform linux/arm64` builds without
+emulation on arm64 hosts. Package *versions* are solved per platform and may
+differ between the two architectures; within a platform both environments still
+share one I/O stack. The image is designed to run as root with storage under
+`/root/storage`.
+
+Note that CI (`.github/workflows/testing.yml`) still builds and publishes
+`linux/amd64` only; arm64 is supported for local builds.
 
 ## Dependencies via pixi + conda-forge
 
@@ -61,9 +68,16 @@ The pinned pixi release can be overridden (checksum must match):
 ```bash
 DOCKER_BUILDKIT=1 docker build -f docker/Dockerfile --platform linux/amd64 \
   --build-arg PIXI_VERSION=0.73.0 \
-  --build-arg PIXI_SHA256=<sha256> \
+  --build-arg PIXI_SHA256_AMD64=<sha256> \
+  --build-arg PIXI_SHA256_ARM64=<sha256> \
   -t cime:latest .
 ```
+
+The checksums are for the `x86_64-unknown-linux-musl` and
+`aarch64-unknown-linux-musl` release tarballs respectively; `UV_VERSION` /
+`UV_SHA256_AMD64` / `UV_SHA256_ARM64` work the same way for uv, whose tarballs
+are the `-unknown-linux-gnu` builds. Only the checksum for the architecture
+being built is consulted.
 
 ## Running the container
 
